@@ -1,0 +1,37 @@
+---
+title: "Route inference by KV cache locality"
+description: "Choose a replica using reusable prefix blocks, queue depth, and eviction signals."
+type: showcase
+level: advanced
+duration: 18 min
+topic: "Inference Performance"
+task: "Benchmark & tune"
+tags: ["KV cache", "Prefix caching", "vLLM", "TTFT"]
+coverLabel: "KV cache locality"
+sources:
+  - label: "vLLM Production Stack KV cache-aware routing"
+    url: "https://docs.vllm.ai/projects/production-stack/en/latest/use_cases/kv-cache-aware-routing.html"
+sidebar:
+  order: 20
+---
+import ScenarioLab from '~/components/ScenarioLab.astro';
+
+In a self-managed vLLM Production Stack lab on GPU-enabled Kubernetes, compare round-robin routing with a KV-aware policy. Route only among replicas serving the same model and compatible cache configuration.
+
+<ScenarioLab prompt={"Choose a replica policy for this request."} cases={[["Warm replica has capacity", "Prefer the warm replica when its queue is short. Verify the cached prefix still exists and compare TTFT against a cold request."], ["Warm replica is saturated", "Compare estimated queue delay plus remaining prefill with the idle replica’s full prefill time. Prefer the lower expected TTFT within policy limits."], ["Cache state is stale", "Treat uncertain cache membership as a miss and fall back to a healthy replica. Check that fresh cache events restore locality."]]} />
+
+## 01 · Build a baseline
+
+Start two identical serving replicas. Pin the model and tokenizer revisions, chat template, and cache configuration. Record queue depth, time to first token (TTFT), errors, and completions per second under round robin.
+
+## 02 · Enable cache-aware routing
+
+Follow the upstream tutorial for your chart release. Verify each replica has a distinct instance ID where the chart requires one, and confirm the router receives cache membership or hit signals.
+
+## 03 · Replay a controlled workload
+
+Warm a long shared prefix on one replica. Replay requests with the same prefix and different suffixes, plus unrelated controls. Inspect the selected replica and cache reuse. Compare p95 TTFT under the same concurrency.
+
+## 04 · Exercise eviction and saturation
+
+Repeat after eviction or replica restart. Confirm the router stops preferring stale cache entries. Load the warm replica and check whether routing to an eligible idle replica beats waiting for a cache hit.

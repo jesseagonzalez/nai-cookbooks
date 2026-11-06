@@ -1,0 +1,57 @@
+---
+title: "Register an NAI model in Pi"
+description: "Configure a custom provider and select the served model in Pi’s model picker."
+type: playbook
+level: intermediate
+duration: 12 min
+topic: "Tool Integrations"
+task: "Connect & integrate"
+tags: ["Pi", "Chat Completions", "OpenAI-compatible API"]
+interface: "Chat Completions"
+sources:
+  - label: "Pi model configuration"
+    url: "https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/models-configuration.md"
+  - label: "Nutanix endpoint validation and client examples"
+    url: "https://www.nutanix.com/tech-center/blog/reasoning-models-on-nutanix-enterprise-ai"
+sidebar:
+  order: 22
+---
+**Interface:** Chat Completions
+
+## Prerequisites
+
+Pi coding agent, a working NAI Chat Completions endpoint, and a scoped bearer key.
+
+## 01 · Check the API base
+
+Run a known-good cURL request. Use its API base URL without the chat/completions suffix. Keep the exact model ID used in the request.
+
+## 02 · Add the custom provider
+
+Merge the example into your Pi models.json, typically under ~/.pi/agent/. Replace the URL and model ID. Set NAI_CLIENT_KEY in the process environment before launching Pi.
+
+```json
+{
+  "$schema": "https://pi.dev/schemas/models.schema.json",
+  "providers": {
+    "nai": {
+      "baseUrl": "https://nai.example/api/v1",
+      "api": "openai-completions",
+      "apiKey": "$NAI_CLIENT_KEY",
+      "models": [
+        {
+          "id": "<served-model-id>"
+        }
+      ]
+    }
+  }
+}
+```
+
+## 03 · Select and test
+
+Run pi and open /model. Choose the NAI model, ask for a short plain-text reply, and verify the request reached NAI. Then test a read-only repository task.
+
+## 04 · Match runtime capabilities
+
+If the response fails on an unsupported message role or request field, use Pi’s documented compatibility settings for the specific error and repeat the same prompt.

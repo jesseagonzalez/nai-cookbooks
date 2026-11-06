@@ -6,6 +6,7 @@ level: beginner
 duration: 8 min
 topic: "Endpoint APIs"
 task: "Connect & integrate"
+tags: ["cURL", "Chat Completions", "API keys"]
 sources:
   - label: "NAI 2.8 API Client Keys"
     url: "https://portal.nutanix.com/page/documents/details?targetId=Nutanix-Enterprise-AI-v2_8%3Atop-nai-api-keys-c.html"
@@ -39,4 +40,4 @@ jq -n --arg model "$NAI_MODEL" '{
   -H "Content-Type: application/json" --data-binary @-
 ```
 
-Next, [try the simulated request](/demos/endpoint-lab/) to see how each setting changes the result.
+Next, [try the simulated request](/showcase/endpoint-lab/) to see how each setting changes the result.

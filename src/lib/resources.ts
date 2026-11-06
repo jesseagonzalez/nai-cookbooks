@@ -5,15 +5,14 @@ export type Resource = CollectionEntry<'docs'>;
 /** Library tabs. Each tab lists the content `type`s it shows. */
 export const formats = [
   { label: 'Learn', types: ['concept'], dir: 'learn' },
-  { label: 'Demos', types: ['demo'], dir: 'demos' },
   { label: 'Cookbook', types: ['cookbook', 'playbook'], dir: 'cookbook' },
   { label: 'Recipes', types: ['recipe'], dir: 'recipes' },
-  { label: 'Showcase', types: ['showcase'], dir: 'showcase' },
+  { label: 'Showcase', types: ['demo', 'showcase'], dir: 'showcase' },
   { label: 'Blog', types: ['blog'], dir: 'blog' },
 ] as const;
 
 export const typeLabel = (t?: string) =>
-  ({ concept: 'Learn', demo: 'Demo', cookbook: 'Cookbook', playbook: 'Playbook', recipe: 'Recipe', showcase: 'Showcase', blog: 'Blog', guide: 'Guide' })[t ?? ''] ?? '';
+  ({ concept: 'Learn', demo: 'Interactive lab', cookbook: 'Cookbook', playbook: 'Playbook', recipe: 'Recipe', showcase: 'Scenario', blog: 'Blog', guide: 'Guide' })[t ?? ''] ?? '';
 
 export const cap = (s?: string) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : '');
 

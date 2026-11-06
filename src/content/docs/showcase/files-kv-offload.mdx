@@ -1,0 +1,45 @@
+---
+title: "Offload KV cache to Nutanix Files"
+description: "Evaluate Nutanix Files as an external cache tier for a vLLM and LMCache lab."
+type: showcase
+level: advanced
+duration: 22 min
+topic: "Storage & KV Cache"
+task: "Deploy & configure"
+tags: ["KV cache", "Nutanix Files", "LMCache", "NFS over RDMA"]
+coverLabel: "KV cache offload"
+sources:
+  - label: "Nutanix Files, LMCache, and GPUDirect Storage reference pattern"
+    url: "https://next.nutanix.com/community-blog-154/context-overload-of-the-gpu-kind-how-lmcache-and-nutanix-files-storage-tame-llm-inference-costs-at-scale-part-2-45412"
+  - label: "LMCache configuration"
+    url: "https://docs.lmcache.ai/api_reference/configurations.html"
+  - label: "Nutanix Enterprise AI 2.8 release overview"
+    url: "https://next.nutanix.com/product-updates/nutanix-enterprise-ai-2-8-45849"
+sidebar:
+  order: 22
+---
+import ScenarioLab from '~/components/ScenarioLab.astro';
+
+This reference lab uses vLLM and LMCache with a Nutanix Files storage tier. NAI 2.8 separately documents host-memory KV offload as a tech preview. Choose a release-matched LMCache backend and verify support for your Files, network, GPU, driver, and runtime combination.
+
+<ScenarioLab prompt={"Select a cache-tier test condition."} cases={[["Exact prefix, local cache warm", "Expect the fastest eligible tier to serve the hit. Check tier counters before attributing a TTFT change to Files."], ["Exact prefix, local tiers cold", "Check for a Files-backed read and cache reuse. Compare reload time with prefill recomputation."], ["Files unavailable", "Verify the configured timeout and failure behavior. Check whether the serving stack recomputes or returns an error, then record the impact on tail latency."]]} />
+
+## 01 · Prepare an isolated Files share
+
+Provision a lab NFS share with access limited to the serving clients. Record capacity, permissions, mount settings, and the cache retention policy. Separate cache data by tenant and model compatibility boundary.
+
+## 02 · Establish a local baseline
+
+Run a fixed workload with long repeated prefixes using the same model, tokenizer, prompt formatting, concurrency, and generation settings. Capture p50 and p95 TTFT, cache hit rate, and throughput.
+
+## 03 · Connect a supported cache backend
+
+Follow the release-specific LMCache setup for the chosen Files-backed storage path. Verify the mount from each serving process. If evaluating NFS over RDMA or GPUDirect Storage, confirm the complete accelerated path and compare it with the standard path.
+
+## 04 · Prove a cache read from Files
+
+Warm the prefix, observe a Files-backed write, then force a miss in faster tiers using the backend’s supported lab procedure. Replay the exact prefix and verify a Files read and reusable cache hit. Use two replicas only when the chosen backend documents cross-instance reuse.
+
+## 05 · Test the failure path
+
+Interrupt lab storage access and observe the documented timeout or recompute behavior. Compare tail latency, errors, and storage I/O under cold, warm, and unavailable conditions before deciding whether the tier improves the workload.

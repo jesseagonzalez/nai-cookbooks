@@ -13,7 +13,7 @@ export default defineConfig({
   markdown: { rehypePlugins: [rehypeBaseLinks(base)] },
   integrations: [
     starlight({
-      title: 'Latent Lab',
+      title: 'Nutanix AI Labs',
       description:
         'A field guide to Nutanix Enterprise AI: learn to deploy, integrate, and operate private AI, from first concepts to production patterns.',
       logo: {
@@ -41,7 +41,6 @@ export default defineConfig({
           ],
         },
         { label: 'Learn', items: [{ autogenerate: { directory: 'learn' } }] },
-        { label: 'Demos', items: [{ autogenerate: { directory: 'demos' } }] },
         { label: 'Cookbook', items: [{ autogenerate: { directory: 'cookbook' } }] },
         { label: 'Recipes', items: [{ autogenerate: { directory: 'recipes' } }] },
         { label: 'Showcase', items: [{ autogenerate: { directory: 'showcase' } }] },

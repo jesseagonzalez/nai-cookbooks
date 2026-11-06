@@ -15,10 +15,9 @@ import { FileTree, Steps } from '@astrojs/starlight/components';
 - src/content/docs/
   - start-here/
   - learn/ one idea per page (type: concept)
-  - demos/ interactive browser labs (type: demo)
   - cookbook/ playbooks and cookbooks (type: playbook | cookbook)
   - recipes/ one focused check or task (type: recipe)
-  - showcase/ end-to-end examples (type: showcase)
+  - showcase/ interactive labs (type: demo) and scenarios (type: showcase)
   - blog/ dated posts (type: blog)
 - templates/ copy these to start a new page
 </FileTree>
@@ -40,6 +39,8 @@ import { FileTree, Steps } from '@astrojs/starlight/components';
 | `topic` | e.g. `Endpoint APIs`, `Kubernetes & NKP` | Library topic filter |
 | `task` | e.g. `Connect & integrate`, `Benchmark & tune` | Library task filter |
 | `sources` | list of `{ label, url }` | References at the end of the page |
+| `cover` | image path, e.g. `../../../assets/showcase/x.jpg` | Card image in the Showcase view |
+| `coverLabel` | short text | Text cover for scenarios without an image |
 | `level` | `beginner`, `intermediate`, `advanced` | Badge and section filters |
 | `duration` | e.g. `15 min` | Time estimate badge |
 | `tags` | list of strings | Future search and topic pages |

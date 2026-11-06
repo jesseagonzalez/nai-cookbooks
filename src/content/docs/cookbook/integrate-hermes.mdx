@@ -1,0 +1,45 @@
+---
+title: "Connect Hermes Agent to NAI"
+description: "Run a Hermes Agent session against a model served by Nutanix Enterprise AI."
+type: playbook
+level: intermediate
+duration: 12 min
+topic: "Tool Integrations"
+task: "Connect & integrate"
+tags: ["Hermes Agent", "Chat Completions", "OpenAI-compatible API"]
+interface: "Chat Completions"
+sources:
+  - label: "Hermes Agent environment variables"
+    url: "https://github.com/nousresearch/hermes-agent/blob/main/website/docs/reference/environment-variables.md"
+  - label: "Nutanix endpoint validation and client examples"
+    url: "https://www.nutanix.com/tech-center/blog/reasoning-models-on-nutanix-enterprise-ai"
+sidebar:
+  order: 20
+---
+**Interface:** Chat Completions
+
+## Prerequisites
+
+Hermes Agent, a reachable NAI Chat Completions endpoint, its exact served model ID, and a scoped client key.
+
+## 01 · Verify the endpoint
+
+Run the first-request recipe from the same machine. Save the API base URL and the exact model ID from the working request.
+
+## 02 · Configure a custom provider
+
+Run hermes model and choose the custom OpenAI-compatible endpoint. Enter the NAI API base URL, scoped key, and served model ID. The shell example shows how to supply the URL and key to the process.
+
+```bash
+export OPENAI_BASE_URL="$NAI_API_BASE_URL"
+export OPENAI_API_KEY="$NAI_CLIENT_KEY"
+hermes model
+```
+
+## 03 · Validate with a simple prompt
+
+Start a fresh session and ask “Reply with NAI smoke test.” Confirm an inference request reached the intended endpoint. Then try one read-only tool in a scratch workspace if the model supports tool calling.
+
+## 04 · Troubleshoot provider selection
+
+If the endpoint sees no traffic, confirm Hermes is using the custom provider and check auxiliary or fallback models before sharing internal data. For an authorization error, compare the header format and key scope with the known-good request.

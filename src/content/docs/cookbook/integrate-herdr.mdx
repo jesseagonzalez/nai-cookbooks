@@ -1,0 +1,44 @@
+---
+title: "Run an NAI agent workspace in herdr"
+description: "Keep an agent, endpoint smoke test, and verification output side by side."
+type: playbook
+level: intermediate
+duration: 10 min
+topic: "Tool Integrations"
+task: "Connect & integrate"
+tags: ["herdr", "Terminal workspace", "cURL"]
+interface: "Terminal workspace"
+sources:
+  - label: "herdr quick start"
+    url: "https://github.com/motionharvest/herdr/blob/main/website/src/content/docs/quick-start.mdx"
+  - label: "Nutanix endpoint validation and client examples"
+    url: "https://www.nutanix.com/tech-center/blog/reasoning-models-on-nutanix-enterprise-ai"
+sidebar:
+  order: 25
+---
+**Interface:** Terminal workspace
+
+## Prerequisites
+
+herdr, a scratch repository, and an already working NAI integration in Hermes Agent, OpenCode, or Pi.
+
+## 01 · Create a workspace
+
+From the scratch repository, launch herdr. Use Ctrl+B then Shift+N to create a workspace with default bindings. Check the working directory in the new pane.
+
+```bash
+cd /path/to/scratch-repo
+herdr
+```
+
+## 02 · Open an agent and a verification pane
+
+Launch the configured NAI-backed agent in the first pane. Use Ctrl+B then V to split right. In the second pane, run the known-good cURL smoke test using a scoped key from your secret store.
+
+## 03 · Compare results
+
+Send a plain-text prompt through the agent. Compare the result with the direct request and check that both reached the intended NAI endpoint. herdr manages the terminal panes while the agent controls model routing.
+
+## 04 · Keep the workspace reusable
+
+Name the workspace for its test task. Record model and endpoint aliases in notes and keep credentials out of pane titles, saved layouts, and copied transcripts.

@@ -1,0 +1,47 @@
+---
+title: "Route Claude Code through an NAI gateway"
+description: "Validate a Claude-backed Messages route before connecting the CLI."
+type: playbook
+level: advanced
+duration: 20 min
+topic: "Tool Integrations"
+task: "Connect & integrate"
+tags: ["Claude Code", "Anthropic Messages", "Agent Gateway"]
+interface: "Anthropic Messages"
+sources:
+  - label: "Connect Claude Code to an LLM gateway"
+    url: "https://code.claude.com/docs/en/llm-gateway-connect"
+  - label: "Claude Code gateway requirements"
+    url: "https://code.claude.com/docs/en/llm-gateway"
+  - label: "Nutanix Enterprise AI 2.8 release overview"
+    url: "https://next.nutanix.com/product-updates/nutanix-enterprise-ai-2-8-45849"
+sidebar:
+  order: 24
+---
+**Interface:** Anthropic Messages
+
+## Prerequisites
+
+Claude Code, an approved Claude model, and an NAI Unified Endpoint that supports Anthropic Messages and the gateway behaviors Claude Code needs.
+
+## 01 · Verify the gateway contract
+
+Use the NAI-provided Anthropic Messages example to smoke-test the approved Claude model. Compare supported routes, authentication and forwarded headers with Anthropic’s gateway compatibility guidance for your client release.
+
+## 02 · Configure a lab session
+
+Use the gateway API base URL and model alias. The example applies when the gateway accepts bearer authentication. Load NAI_GATEWAY_TOKEN from a secret store and choose the credential mechanism documented for your gateway if its authentication differs.
+
+```bash
+export ANTHROPIC_BASE_URL="$NAI_MESSAGES_BASE_URL"
+export ANTHROPIC_AUTH_TOKEN="$NAI_GATEWAY_TOKEN"
+claude --model "$NAI_CLAUDE_MODEL"
+```
+
+## 03 · Confirm the route
+
+In Claude Code, inspect /status and run a short prompt in a scratch repository. Confirm the request reached the intended NAI Unified Endpoint and Claude provider. Test streaming and a read-only tool call separately.
+
+## 04 · Check mismatches
+
+If a direct Messages request succeeds but Claude Code fails, compare required headers, model aliases, streaming events, and supported endpoints. Use the gateway compatibility guide to identify the unsupported operation.

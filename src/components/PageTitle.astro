@@ -10,3 +10,6 @@ const eyebrow = [typeLabel(type), topic].filter(Boolean).join(' · ');
 <Default />
 {entry.data.description && type && <p class="ll-lede">{entry.data.description}</p>}
 <Meta {level} {duration} {date} {author} id={type && type !== 'guide' ? entry.id : undefined} />
+{entry.data.tags.length > 0 && type && type !== 'blog' && (
+  <div class="ll-chips ll-title-tags">{entry.data.tags.map((t) => <span class="ll-chip">{t}</span>)}</div>
+)}

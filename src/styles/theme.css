@@ -1,5 +1,5 @@
 /*
- * Latent Lab theme: Nutanix-aligned, light-first.
+ * Nutanix AI Labs theme: Nutanix-aligned, light-first.
  * Ink #131313, brand purple #6a1acb / deep #510fa6, tint #f7f3ff,
  * Montserrat (light-weight display headings), 4px corners, purple→pink→coral rule.
  */
@@ -163,12 +163,39 @@ header.header { border-bottom: 1px solid var(--sl-color-gray-5); }
 .ll-card {
   position: relative; overflow: hidden;
   display: flex; flex-direction: column;
-  padding: 1.3rem 1.3rem 1.1rem;
   border: 1px solid var(--sl-color-gray-5); border-radius: var(--ll-radius);
   background: var(--sl-color-black);
   transition: border-color 0.15s, box-shadow 0.15s;
 }
 .ll-card[hidden] { display: none; }
+.ll-card-body { flex: 1; display: flex; flex-direction: column; padding: 1.3rem 1.3rem 1.1rem; }
+/* Covers show in the Showcase view */
+.ll-cover { display: none; aspect-ratio: 3 / 2; overflow: hidden; border-bottom: 1px solid var(--sl-color-gray-5); background: var(--ll-tint-adaptive); }
+.ll-library[data-tab-active='Showcase'] .ll-cover { display: block; }
+.ll-library[data-tab-active='Showcase'] .ll-card::before { display: none; }
+.ll-cover img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.ll-cover { text-decoration: none; }
+.ll-cover-label { position: relative; }
+.ll-cover-label img { position: absolute; inset: 0; }
+.ll-cover-label span { position: relative; }
+.ll-library[data-tab-active='Showcase'] .ll-cover-label { display: grid; align-items: end; padding: 1.1rem; }
+.ll-cover-label span {
+  justify-self: start; padding: 0.55rem 0.8rem; border-radius: var(--ll-radius);
+  background: var(--ll-tint-adaptive); color: var(--sl-color-accent-high);
+  font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+}
+.ll-cover-label strong { display: block; font-size: 1.15rem; letter-spacing: 0; text-transform: none; }
+/* Tag chips */
+.ll-chips { display: flex; flex-wrap: wrap; gap: 0.3rem; margin: 0 0 0.75rem; }
+.ll-chips[hidden] { display: none; }
+.ll-active-tags { margin-bottom: 1rem; }
+.ll-chip {
+  font: inherit; font-size: 11px; font-weight: 600; line-height: 1.5; cursor: pointer;
+  padding: 0.15rem 0.5rem; border-radius: 20px;
+  border: 1px solid var(--ll-line-adaptive); background: var(--ll-tint-adaptive); color: var(--sl-color-accent-high);
+}
+span.ll-chip { cursor: default; }
+.ll-chip:hover, .ll-chip[aria-pressed='true'] { border-color: var(--sl-color-accent); }
 .ll-card::before { content: ''; position: absolute; inset: 0 0 auto; height: 4px; background: var(--ll-rule); opacity: 0; transition: opacity 0.15s; }
 .ll-card:hover { border-color: #c6b0e9; box-shadow: 0 2px 8px #24005212; }
 .ll-card:hover::before { opacity: 1; }

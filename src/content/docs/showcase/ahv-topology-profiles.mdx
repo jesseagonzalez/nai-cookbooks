@@ -1,0 +1,41 @@
+---
+title: "Deploy topology-aware AHV VMs with VM profiles"
+description: "Select an AI-optimized VM profile and verify GPU, NIC, and NUMA placement in the guest."
+type: showcase
+level: advanced
+duration: 20 min
+topic: "AHV & GPU Topology"
+task: "Deploy & configure"
+tags: ["AHV", "VM profiles", "NUMA", "GPU placement"]
+coverLabel: "AHV VM profiles"
+sources:
+  - label: "NCI 7.6 topology-aware scheduling and AI-optimized VM profiles"
+    url: "https://www.nutanix.com/tech-center/blog/nci-76-combining-nutanix-simplicity-with-near-bare-metal-ai-performance"
+sidebar:
+  order: 23
+---
+import ScenarioLab from '~/components/ScenarioLab.astro';
+
+Nutanix documents AI-optimized system-defined VM profiles for supported GPU-dense configurations. This lab follows the NCI 7.6 and AHV 11.2 reference. Check the profile catalog and supported configuration for your exact release and hardware.
+
+<ScenarioLab prompt={"Select a deployment outcome to inspect."} cases={[["Profile fits an eligible host", "Provision the guest and verify GPU and NIC inventory, NUMA layout, and expected links before starting the workload."], ["Enough free GPUs across the cluster, placement fails", "Check whether one eligible host has the required GPU and NIC combination in the topology the profile requests. Cluster-wide totals can hide placement constraints."], ["Guest boots, collective bandwidth is low", "Compare guest topology, driver and firmware versions, and fabric link state with the approved baseline. Isolate intra-VM and inter-VM tests."]]} />
+
+## 01 · Match the workload to a profile
+
+Record the required GPU count, NIC type and fabric, vCPU and memory shape, and locality needs. Compare them with system-defined AI profiles available on the target cluster. For example, Nutanix documents ai.large.b200.8gpu.cx7_ib for its B200 and ConnectX-7 InfiniBand test environment.
+
+## 02 · Deploy from the system-defined profile
+
+In Prism Central, use the release-specific VM creation workflow to select the supported AI-optimized profile and provision a lab guest. Attach the appropriate boot image and networks using the cluster’s documented workflow. Verify placement succeeds before installing the guest stack.
+
+## 03 · Inspect guest topology
+
+Run nvidia-smi -L and nvidia-smi topo -m in the guest. Inspect CPU and memory locality with numactl --hardware where available. Compare the reported GPU and NIC relationships and NUMA layout with the selected profile.
+
+## 04 · Validate data movement
+
+Use the appropriate NCCL or RDMA lab test for your configuration. Record GPU and NIC visibility, collective bandwidth and error counts, then run an inference smoke test before adding the guest to an NKP worker pool.
+
+## 05 · Diagnose a placement failure
+
+Check host eligibility, free device inventory, fabric mode, and whether the required topology fits on an eligible host. Reconcile the profile and available capacity before retrying.

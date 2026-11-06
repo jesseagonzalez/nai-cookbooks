@@ -1,0 +1,47 @@
+---
+title: "Connect Codex to an NAI MCP connector"
+description: "Give Codex a scoped read-only tool through Nutanix Agent Gateway."
+type: playbook
+level: advanced
+duration: 18 min
+topic: "Tool Integrations"
+task: "Connect & integrate"
+tags: ["Codex", "MCP", "Agent Gateway"]
+interface: "MCP tools"
+sources:
+  - label: "Codex MCP configuration"
+    url: "https://learn.chatgpt.com/docs/extend/mcp?surface=cli"
+  - label: "Codex configuration reference"
+    url: "https://learn.chatgpt.com/docs/config-file/config-reference"
+  - label: "Nutanix Agent Gateway and MCP in NAI 2.8"
+    url: "https://next.nutanix.com/nutanix-agentic-ai-180/nutanix-enterprise-ai-nai-2-8-is-now-available-45852"
+sidebar:
+  order: 23
+---
+**Interface:** MCP tools
+
+## Prerequisites
+
+Codex CLI with an existing model login, an NAI Agent Gateway MCP connector with a reachable Streamable HTTP URL, and a scoped MCP client credential.
+
+## 01 · Prepare a lab connector
+
+Expose a read-only tool such as lab_status. Confirm the connector URL and required HTTP authentication format in NAI. This integration adds tools to Codex while its existing model provider handles inference. A direct custom Codex provider requires a compatible Responses API.
+
+## 02 · Register the connector
+
+For a connector that accepts bearer authentication, load NAI_MCP_TOKEN from your secret store and merge the sample into the Codex configuration. Substitute the exact MCP URL. If NAI specifies a different header format, use the documented Codex environment-backed header option.
+
+```toml
+[mcp_servers.nai_lab]
+url = "https://gateway.example/replace-with-connector-path"
+bearer_token_env_var = "NAI_MCP_TOKEN"
+```
+
+## 03 · Verify discovery and invocation
+
+Run codex mcp list to confirm registration. Start a new Codex session and ask it to use only the lab_status tool. Check the tool result and available gateway audit evidence.
+
+## 04 · Prove the access boundary
+
+Attempt a read-only tool outside the key’s scope. Verify that it is absent from discovery or denied at invocation. If discovery fails for every tool, check TLS, the connector URL, and the key’s scope.

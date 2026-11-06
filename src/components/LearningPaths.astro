@@ -5,7 +5,7 @@ const paths: [string, string[]][] = [
   ['01 / Foundations', ['learn/nai-foundations', 'learn/how-models-work', 'cookbook/first-request']],
   ['02 / Platform operations', ['cookbook/deploy-nai', 'blog/ops-field-note', 'cookbook/inference-bench']],
   ['03 / Application integration', ['cookbook/connect-app', 'showcase/document-assistant', 'cookbook/mcp-gateway']],
-  ['04 / Tools & frameworks', ['recipes/python-openai-sdk', 'recipes/open-webui', 'cookbook/langchain-rag', 'recipes/vscode-coding-assistant']],
+  ['04 / Tools & agents', ['recipes/python-openai-sdk', 'recipes/open-webui', 'cookbook/integrate-opencode', 'cookbook/integrate-claude']],
 ];
 const docs = new Map((await getCollection('docs')).map((e) => [e.id, e.data.title]));
 ---

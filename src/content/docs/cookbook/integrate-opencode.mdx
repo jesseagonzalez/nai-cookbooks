@@ -1,0 +1,62 @@
+---
+title: "Use OpenCode with an NAI model"
+description: "Register an NAI provider and test a coding prompt in a scratch repository."
+type: playbook
+level: intermediate
+duration: 15 min
+topic: "Tool Integrations"
+task: "Connect & integrate"
+tags: ["OpenCode", "Chat Completions", "OpenAI-compatible API"]
+interface: "Chat Completions"
+sources:
+  - label: "OpenCode providers"
+    url: "https://docs.opencode.ai/docs/providers/"
+  - label: "OpenCode config"
+    url: "https://docs.opencode.ai/docs/config/"
+  - label: "Nutanix endpoint validation and client examples"
+    url: "https://www.nutanix.com/tech-center/blog/reasoning-models-on-nutanix-enterprise-ai"
+sidebar:
+  order: 21
+---
+**Interface:** Chat Completions
+
+## Prerequisites
+
+OpenCode with support for the npm provider configuration shown below, a Chat Completions endpoint, and a scoped bearer key.
+
+## 01 · Prepare a baseline
+
+Verify the same NAI model using the cURL recipe. Load NAI_CLIENT_KEY from your secret store into the shell that will launch OpenCode.
+
+## 02 · Add the provider
+
+Merge this provider into your project’s opencode.json. Replace the base URL and served model placeholder. If your OpenCode version uses a different provider schema, use the upstream provider guide for that release.
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "nai": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Nutanix Enterprise AI",
+      "options": {
+        "baseURL": "https://nai.example/api/v1",
+        "apiKey": "{env:NAI_CLIENT_KEY}"
+      },
+      "models": {
+        "<served-model-id>": {
+          "name": "NAI lab model"
+        }
+      }
+    }
+  }
+}
+```
+
+## 03 · Select and verify the model
+
+Start opencode and select the NAI model via /models. Ask for a short explanation of a sample README. Confirm the request appears on the intended NAI endpoint before trying a read-only file tool.
+
+## 04 · Diagnose failures by stage
+
+If the model is absent, check the config and provider ID. If plain chat works but a tool call fails, verify tool-call compatibility separately with your model and runtime.

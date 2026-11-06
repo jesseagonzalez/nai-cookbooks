@@ -1,4 +1,4 @@
-# Latent Lab: a field guide to Nutanix Enterprise AI
+# Nutanix AI Labs: a field guide to Nutanix Enterprise AI
 
 An education site for Nutanix Enterprise AI with Learn, Demos, Cookbook, Recipes, Showcase, and Blog resources for beginners through experts. Live at https://jesseagonzalez.github.io/nai-cookbooks/
 

@@ -1,0 +1,20 @@
+---
+/** Pick a case and read the expected outcome. <ScenarioLab prompt="..." cases={[[label, outcome], ...]} /> */
+interface Props { prompt: string; cases: [string, string][]; title?: string }
+const { prompt, cases, title = 'Try the simulated scenario' } = Astro.props;
+---
+<div class="ll-demo not-content" data-scenario>
+  <p class="ll-eyebrow">{title}</p>
+  <label>{prompt}
+    <select data-case>{cases.map(([label, outcome]) => <option data-outcome={outcome}>{label}</option>)}</select>
+  </label>
+  <output data-out aria-live="polite">{cases[0]?.[1]}</output>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-scenario]').forEach((el) => {
+    const sel = el.querySelector<HTMLSelectElement>('[data-case]')!;
+    const out = el.querySelector('[data-out]')!;
+    sel.addEventListener('change', () => { out.textContent = sel.selectedOptions[0].dataset.outcome ?? ''; });
+  });
+</script>

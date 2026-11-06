@@ -1,0 +1,37 @@
+---
+title: "Route prompts by intent and policy"
+description: "Send coding, policy, and ambiguous requests to different approved endpoints."
+type: showcase
+level: advanced
+duration: 16 min
+topic: "Endpoint APIs"
+task: "Connect & integrate"
+tags: ["Semantic routing", "Model routing", "Access control"]
+coverLabel: "Semantic routing"
+sources:
+  - label: "vLLM Production Stack semantic router integration"
+    url: "https://docs.vllm.ai/projects/production-stack/en/vllm-stack-0.1.8/use_cases/semantic-router-integration.html"
+sidebar:
+  order: 21
+---
+import ScenarioLab from '~/components/ScenarioLab.astro';
+
+Place a semantic router ahead of approved inference endpoints. Use a labeled prompt set to evaluate model selection, fallback, and policy checks before enabling routing for live traffic.
+
+<ScenarioLab prompt={"Choose a sample request to inspect its route."} cases={[["“Explain this Python traceback”", "Coding route → approved coding model. The route is eligible when confidence clears the threshold and the data policy permits it."], ["“What is our internal travel policy?”", "Policy route → approved internal retrieval workflow. Use retrieved handbook passages as evidence."], ["“Fix this and summarize the policy”", "Mixed intent → ask for clarification or use the approved fallback. Apply any data restrictions before forwarding."]]} />
+
+## 01 · Define the routes
+
+Create a small route table for coding assistance, internal policy questions, and general requests. Map each route to an approved model or application endpoint. Define where sensitive data may go before classification, including where the classifier runs.
+
+## 02 · Configure confidence and fallback
+
+Use a labeled validation set to pick a threshold. Send uncertain prompts to a policy-approved default or ask for clarification. Keep the route allowlist independent of classifier output.
+
+## 03 · Run in shadow mode
+
+Record predicted routes without changing live destinations. Compare route decisions with human labels, including ambiguous prompts, mixed intent, and requests that try to override policy.
+
+## 04 · Measure the rollout
+
+Check per-route quality, misroute rate, fallback frequency, router latency, and end-to-end latency. If eligible replicas exist behind a route, apply KV-aware selection within that pool.
