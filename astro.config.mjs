@@ -17,6 +17,7 @@ export default defineConfig({
       description:
         'A field guide to Nutanix Enterprise AI: learn to deploy, integrate, and operate private AI, from first concepts to production patterns.',
       customCss: ['./src/styles/theme.css'],
+      routeMiddleware: './src/routeData.ts',
       lastUpdated: true,
       components: {
         Header: './src/components/Header.astro',

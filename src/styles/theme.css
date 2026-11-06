@@ -332,3 +332,30 @@ nav.sidebar a[aria-current='page'], nav.sidebar a[aria-current='page']:hover {
 
 /* Learning path thumbnails */
 .ll-path-thumb { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 4px; margin-bottom: 0.8rem; }
+
+/* ---------- One page at a time: "On this page" on the left, no site-wide sidebar ---------- */
+@media (min-width: 72rem) {
+  .right-sidebar-container { order: 0; margin-inline-start: 0; }
+  .right-sidebar { border-inline-start: 0; border-inline-end: 1px solid var(--sl-color-hairline); }
+  .right-sidebar-panel { padding-top: 2rem; }
+  .main-pane { flex: 1; min-width: 0; }
+}
+/* Header navigation stays reachable on small screens now that there is no menu drawer. */
+@media (max-width: 71.99rem) {
+  .ll-header { gap: 0.75rem; }
+  .ll-nav { display: flex; order: 0; overflow-x: auto; scrollbar-width: none; gap: 0.9rem; }
+  .site-title span, .site-title::after { display: none; }
+}
+@media (max-width: 50rem) {
+  .header .social-icons, .header starlight-theme-select { display: none; }
+}
+@media (min-width: 72rem) {
+  [data-has-toc] .main-pane { max-width: 58rem; }
+}
+@media (max-width: 71.99rem) {
+  .header .title-wrapper, .site-title { flex-shrink: 0; overflow: visible; }
+  .site-title svg { width: 5.6rem; height: auto; }
+  .ll-header > :first-child { flex: 0 1 auto; }
+  .ll-nav { flex: 1; min-width: 0; }
+}
+.ll-footer-links { display: flex; gap: 1.2rem; }
