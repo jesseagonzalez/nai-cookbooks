@@ -1,0 +1,28 @@
+---
+/**
+ * Renders a Mermaid diagram client-side.
+ * Usage: <Mermaid code={`flowchart LR\n  A --> B`} />
+ */
+interface Props { code: string; caption?: string }
+const { code, caption } = Astro.props;
+---
+<figure class="academy-mermaid not-content">
+  <pre class="mermaid">{code.trim()}</pre>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<script>
+  const nodes = document.querySelectorAll<HTMLElement>('pre.mermaid');
+  if (nodes.length) {
+    const { default: mermaid } = await import('mermaid');
+    const dark = document.documentElement.dataset.theme !== 'light';
+    mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default' });
+    await mermaid.run({ nodes });
+  }
+</script>
+
+<style>
+  .academy-mermaid { margin: 1.5rem 0; padding: 1rem; border: 1px solid var(--sl-color-gray-5); border-radius: 0.6rem; overflow-x: auto; }
+  .academy-mermaid pre { background: transparent; border: 0; display: flex; justify-content: center; }
+  figcaption { font-size: var(--sl-text-sm); color: var(--sl-color-gray-3); text-align: center; }
+</style>

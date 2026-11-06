@@ -1,0 +1,7 @@
+---
+import Default from '@astrojs/starlight/components/PageTitle.astro';
+import Meta from './Meta.astro';
+const { level, type, duration, date, author } = Astro.locals.starlightRoute.entry.data;
+---
+<Default />
+<Meta {level} {type} {duration} {date} {author} />

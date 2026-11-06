@@ -1,0 +1,57 @@
+---
+title: Call NAI from Python with the OpenAI SDK
+description: Use the official OpenAI Python SDK against a private NAI endpoint, including streaming.
+type: recipe
+level: beginner
+duration: 5 min
+tags: [python, sdk, streaming]
+sidebar:
+  order: 1
+---
+
+**You need:** Python 3.9+, a running endpoint, and the `NAI_*` environment variables.
+
+```bash
+pip install openai
+```
+
+## Basic completion
+
+```python title="chat.py"
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    base_url=os.environ["NAI_BASE_URL"],
+    api_key=os.environ["NAI_API_KEY"],
+)
+
+resp = client.chat.completions.create(
+    model=os.environ["NAI_MODEL"],
+    messages=[
+        {"role": "system", "content": "You are a concise assistant."},
+        {"role": "user", "content": "Give me three uses for private LLMs."},
+    ],
+    temperature=0.2,
+)
+print(resp.choices[0].message.content)
+```
+
+## Streaming
+
+```python title="stream.py" ins={4,7-9}
+stream = client.chat.completions.create(
+    model=os.environ["NAI_MODEL"],
+    messages=[{"role": "user", "content": "Write a haiku about GPUs."}],
+    stream=True,
+)
+
+for chunk in stream:
+    if chunk.choices and chunk.choices[0].delta.content:
+        print(chunk.choices[0].delta.content, end="", flush=True)
+```
+
+## Variations
+
+- **Self-signed certs in a lab:** pass `http_client=httpx.Client(verify="/path/to/ca.pem")`.
+- **JavaScript/TypeScript:** the `openai` npm package takes the same `baseURL` and `apiKey` options.

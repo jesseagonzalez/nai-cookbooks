@@ -1,0 +1,70 @@
+---
+title: RAG over your documents with LangChain
+description: Answer questions about your own PDFs and docs using a private NAI chat endpoint and an embeddings endpoint.
+type: recipe
+level: intermediate
+duration: 15 min
+tags: [rag, langchain, embeddings, python]
+sidebar:
+  order: 3
+---
+
+import { Aside } from '@astrojs/starlight/components';
+import Mermaid from '~/components/Mermaid.astro';
+
+Retrieval-augmented generation (RAG) finds relevant passages from your documents and hands them to the model as context, so answers are grounded in *your* data, and that data never leaves your infrastructure.
+
+<Mermaid code={`
+flowchart LR
+  D[Your docs] --> S[Split into chunks] --> E[Embeddings endpoint] --> V[(Vector store)]
+  Q[Question] --> E2[Embed question] --> V
+  V -->|top-k chunks| P[Prompt] --> L[NAI chat endpoint] --> A[Answer]
+`} />
+
+**You need:** a chat endpoint, an embeddings endpoint (set `NAI_EMBED_MODEL`), and Python 3.10+.
+
+```bash
+pip install langchain langchain-openai langchain-community langchain-text-splitters faiss-cpu pypdf
+```
+
+```python title="rag.py"
+import os
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from langchain_community.document_loaders import PyPDFDirectoryLoader
+from langchain_community.vectorstores import FAISS
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+common = dict(base_url=os.environ["NAI_BASE_URL"], api_key=os.environ["NAI_API_KEY"])
+llm = ChatOpenAI(model=os.environ["NAI_MODEL"], temperature=0, **common)
+embeddings = OpenAIEmbeddings(
+    model=os.environ["NAI_EMBED_MODEL"], check_embedding_ctx_length=False, **common
+)
+
+# 1. Load and chunk
+docs = PyPDFDirectoryLoader("./docs").load()
+chunks = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=150).split_documents(docs)
+
+# 2. Index
+store = FAISS.from_documents(chunks, embeddings)
+retriever = store.as_retriever(search_kwargs={"k": 4})
+
+# 3. Ask
+def ask(question: str) -> str:
+    context = "\n\n".join(d.page_content for d in retriever.invoke(question))
+    prompt = (
+        "Answer using only the context below. If the answer isn't there, say so.\n\n"
+        f"Context:\n{context}\n\nQuestion: {question}"
+    )
+    return llm.invoke(prompt).content
+
+print(ask("What is our data retention policy?"))
+```
+
+<Aside type="tip">
+  `check_embedding_ctx_length=False` stops the client from using OpenAI-specific tokenization, which non-OpenAI embedding models don't need.
+</Aside>
+
+## Going further
+
+- Swap FAISS for a persistent vector database (pgvector, Milvus) for production.
+- Return source citations by keeping `metadata["source"]` from each chunk.

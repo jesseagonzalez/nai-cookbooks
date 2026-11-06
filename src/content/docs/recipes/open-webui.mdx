@@ -1,0 +1,42 @@
+---
+title: Chat UI with Open WebUI
+description: Give your team a ChatGPT-style interface backed by a private NAI endpoint.
+type: recipe
+level: beginner
+duration: 10 min
+tags: [open-webui, chat, ui]
+sidebar:
+  order: 2
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+**You need:** Docker or a Kubernetes cluster, a running endpoint, and an API key.
+
+<Tabs>
+  <TabItem label="Docker">
+  ```bash
+  docker run -d -p 3000:8080 \
+    -e OPENAI_API_BASE_URL="$NAI_BASE_URL" \
+    -e OPENAI_API_KEY="$NAI_API_KEY" \
+    -v open-webui:/app/backend/data \
+    --name open-webui ghcr.io/open-webui/open-webui:main
+  ```
+  </TabItem>
+  <TabItem label="Kubernetes (Helm)">
+  ```bash
+  helm repo add open-webui https://helm.openwebui.com/ && helm repo update
+  helm install open-webui open-webui/open-webui -n open-webui --create-namespace \
+    --set ollama.enabled=false \
+    --set openaiBaseApiUrl="$NAI_BASE_URL"
+  # Then add the API key in Admin Settings → Connections
+  ```
+  </TabItem>
+</Tabs>
+
+Open `http://localhost:3000`, create the first (admin) account, and pick your NAI endpoint from the model selector.
+
+## Tips
+
+- Create a **dedicated API key** for Open WebUI so you can rotate it independently.
+- Add several NAI endpoints (for example a fast small model and a larger reasoning model) and let users choose.

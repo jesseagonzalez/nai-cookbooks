@@ -1,0 +1,46 @@
+---
+title: OpenAI-compatible APIs
+description: Why NAI speaks the OpenAI API format, and what that means for the tools and SDKs you already use.
+type: concept
+level: beginner
+duration: 6 min
+tags: [api, integration]
+sidebar:
+  order: 3
+---
+
+The OpenAI REST API has become the de facto standard interface for LLMs. Because NAI endpoints speak the same format, most tools that work with OpenAI work with NAI by changing **two settings**:
+
+1. **Base URL** → your NAI endpoint URL
+2. **API key** → an NAI API key
+
+and choosing your endpoint's **model name**.
+
+## The core request
+
+```bash
+curl "$NAI_BASE_URL/chat/completions" \
+  -H "Authorization: Bearer $NAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "'"$NAI_MODEL"'",
+    "messages": [{"role": "user", "content": "Explain Kubernetes in one sentence."}]
+  }'
+```
+
+## Tools that work this way
+
+- **SDKs:** OpenAI Python/JS SDKs, LangChain, LlamaIndex
+- **Chat UIs:** Open WebUI, LibreChat
+- **IDE assistants:** Continue and other OpenAI-compatible coding extensions
+- **Agent frameworks:** most support a custom OpenAI base URL
+
+## Conventions used on this site
+
+Every recipe uses the same three environment variables:
+
+```bash
+export NAI_BASE_URL="https://<your-nai-host>/<api-path>/v1"   # copy from the endpoint details page
+export NAI_API_KEY="<your-api-key>"
+export NAI_MODEL="<your-endpoint-name>"
+```

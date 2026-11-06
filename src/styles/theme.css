@@ -1,0 +1,71 @@
+/* Academy theme: violet accent with a cyan highlight. */
+:root {
+  --sl-color-accent-low: #221a4d;
+  --sl-color-accent: #7855fa;
+  --sl-color-accent-high: #d4c9ff;
+  --sl-font: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+:root[data-theme='light'] {
+  --sl-color-accent-low: #e5ddff;
+  --sl-color-accent: #5b38e0;
+  --sl-color-accent-high: #2a1873;
+}
+
+/* Hero polish on the splash page */
+.hero h1 {
+  background: linear-gradient(90deg, #a78bfa, #1fdde9);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Meta row under page titles */
+.academy-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: var(--sl-text-sm);
+}
+.academy-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--sl-color-gray-5);
+  color: var(--sl-color-gray-2);
+}
+.academy-pill[data-level='beginner'] { border-color: #22c55e; color: #22c55e; }
+.academy-pill[data-level='intermediate'] { border-color: #f59e0b; color: #f59e0b; }
+.academy-pill[data-level='advanced'] { border-color: #ef4444; color: #ef4444; }
+
+/* Content index grid */
+.academy-index {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.academy-index a {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.6rem;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.academy-index a:hover { border-color: var(--sl-color-accent); transform: translateY(-2px); }
+.academy-index .t { font-weight: 600; color: var(--sl-color-white); }
+.academy-index .d { font-size: var(--sl-text-sm); color: var(--sl-color-gray-3); }
+.academy-index .academy-meta { margin-top: auto; font-size: var(--sl-text-xs); }
+.academy-filter { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+.academy-filter button {
+  font: inherit; font-size: var(--sl-text-sm); cursor: pointer;
+  padding: 0.25rem 0.8rem; border-radius: 999px;
+  border: 1px solid var(--sl-color-gray-5); background: transparent; color: var(--sl-color-gray-2);
+}
+.academy-filter button[aria-pressed='true'] { background: var(--sl-color-accent); border-color: var(--sl-color-accent); color: #fff; }

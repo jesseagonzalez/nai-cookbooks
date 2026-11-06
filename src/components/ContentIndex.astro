@@ -1,0 +1,60 @@
+---
+/**
+ * Lists every page in a section as cards, with level filters.
+ * Usage in MDX: <ContentIndex dir="recipes" />
+ */
+import { getCollection } from 'astro:content';
+import Meta from './Meta.astro';
+
+interface Props {
+  dir: string;
+  /** Sort newest first by `date` (for the blog). */
+  byDate?: boolean;
+}
+const { dir, byDate = false } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+let entries = await getCollection(
+  'docs',
+  (e) => e.id.startsWith(`${dir}/`) && !e.id.endsWith('/index') && !e.data.draft,
+);
+entries = byDate
+  ? entries.sort((a, b) => (b.data.date?.getTime() ?? 0) - (a.data.date?.getTime() ?? 0))
+  : entries.sort((a, b) => (a.data.sidebar?.order ?? 999) - (b.data.sidebar?.order ?? 999) || a.data.title.localeCompare(b.data.title));
+const hasLevels = entries.some((e) => e.data.level);
+---
+<div class="academy-wrap not-content">
+  {hasLevels && (
+    <div class="academy-filter" role="group" aria-label="Filter by level">
+      {['all', 'beginner', 'intermediate', 'advanced'].map((l) => (
+        <button type="button" data-filter={l} aria-pressed={l === 'all' ? 'true' : 'false'}>
+          {l.charAt(0).toUpperCase() + l.slice(1)}
+        </button>
+      ))}
+    </div>
+  )}
+  <div class="academy-index">
+    {entries.map((e) => (
+      <a href={`${base}/${e.id}/`} data-level={e.data.level ?? ''}>
+        <span class="t">{e.data.title}</span>
+        {e.data.description && <span class="d">{e.data.description}</span>}
+        <Meta level={e.data.level} duration={e.data.duration} date={e.data.date} />
+      </a>
+    ))}
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.academy-wrap').forEach((wrap) => {
+    const buttons = wrap.querySelectorAll<HTMLButtonElement>('[data-filter]');
+    buttons.forEach((btn) =>
+      btn.addEventListener('click', () => {
+        const f = btn.dataset.filter;
+        buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+        wrap.querySelectorAll<HTMLElement>('.academy-index a').forEach((card) => {
+          card.hidden = f !== 'all' && card.dataset.level !== f;
+        });
+      }),
+    );
+  });
+</script>

@@ -1,0 +1,55 @@
+---
+title: AI inference basics
+description: Models, tokens, inference vs. training, and why GPUs matter. The vocabulary you need for everything else.
+type: concept
+level: beginner
+duration: 8 min
+tags: [llm, gpu, fundamentals]
+sidebar:
+  order: 1
+---
+
+import { Aside } from '@astrojs/starlight/components';
+import Mermaid from '~/components/Mermaid.astro';
+
+## Training vs. inference
+
+A **model** is a large file of learned numbers (weights). Creating those weights is **training**: expensive, done once, usually by a model provider. Using the model to answer a request is **inference**: done millions of times, and what Nutanix Enterprise AI is built to run.
+
+<Mermaid code={`
+flowchart LR
+  A[Prompt] --> B[Tokenizer] --> C[Model on GPU] --> D[Generated tokens] --> E[Response]
+`} />
+
+## Tokens
+
+Models read and write **tokens**, chunks of text roughly ¾ of a word in English. Tokens matter because:
+
+- **Context window**: the maximum tokens a model can consider at once (prompt + answer).
+- **Throughput**: measured in tokens per second.
+- **Cost and capacity**: GPU time scales with tokens processed.
+
+## Why GPUs
+
+Inference is mostly huge matrix multiplications, which GPUs do in parallel. Two GPU properties decide what you can run:
+
+| Property | Why it matters |
+| --- | --- |
+| **GPU memory (VRAM)** | The model weights must fit, plus working memory (the KV cache) for active requests. |
+| **Compute & memory bandwidth** | Determines tokens per second and how many users you can serve at once. |
+
+A useful rule of thumb: an *N*-billion-parameter model in 16-bit precision needs about **2 × N GB** of VRAM for weights alone. An 8B model needs roughly 16 GB before any KV cache.
+
+<Aside type="tip">
+  Quantized variants (8-bit, 4-bit) shrink memory needs considerably at a small quality cost, a common way to fit larger models on fewer GPUs.
+</Aside>
+
+## Serving engines
+
+An **inference server** (for example vLLM) loads the model onto GPUs, batches concurrent requests, and exposes an HTTP API. Nutanix Enterprise AI manages these serving engines for you, so you choose a model and a GPU profile rather than hand-tuning servers.
+
+## Key takeaways
+
+- Inference, not training, is the day-to-day workload.
+- Tokens are the unit of everything: context, speed, and capacity.
+- VRAM is usually the first constraint when picking a model.

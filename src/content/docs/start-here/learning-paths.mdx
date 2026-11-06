@@ -1,0 +1,55 @@
+---
+title: Learning paths
+description: Curated sequences of pages for each role and experience level.
+type: guide
+duration: 3 min
+---
+
+import { LinkCard, Steps } from '@astrojs/starlight/components';
+
+Each path is an ordered reading list. Follow it top to bottom, or jump in wherever you're comfortable.
+
+## Foundations
+
+For anyone new to generative AI or to Nutanix Enterprise AI.
+
+<Steps>
+1. [AI inference basics](/concepts/ai-inference-basics/): models, tokens, and why GPUs matter.
+2. [How Nutanix Enterprise AI works](/concepts/nai-architecture/): the moving parts.
+3. [OpenAI-compatible APIs](/concepts/openai-compatible-apis/): the contract your apps talk to.
+4. [Serve your first model](/tutorials/first-inference-endpoint/): click through it end to end.
+</Steps>
+
+## Operator
+
+For platform and infrastructure engineers who install and run NAI.
+
+<Steps>
+1. [How Nutanix Enterprise AI works](/concepts/nai-architecture/)
+2. [Install Nutanix Enterprise AI on Kubernetes](/tutorials/install-nai-on-kubernetes/)
+3. [Serve your first model](/tutorials/first-inference-endpoint/)
+4. Coming soon: GPU sizing, upgrades, and monitoring.
+</Steps>
+
+## Builder
+
+For developers integrating private models into apps and tools.
+
+<Steps>
+1. [OpenAI-compatible APIs](/concepts/openai-compatible-apis/)
+2. [Call NAI from Python with the OpenAI SDK](/recipes/python-openai-sdk/)
+3. [Chat UI with Open WebUI](/recipes/open-webui/)
+4. [RAG over your documents with LangChain](/recipes/langchain-rag/)
+5. [Private coding assistant in VS Code](/recipes/vscode-coding-assistant/)
+</Steps>
+
+## Expert
+
+For architects running AI as a shared platform.
+
+<Steps>
+1. [Demo: Private enterprise knowledge assistant](/demos/private-knowledge-assistant/)
+2. Coming soon: multi-tenant endpoints and API key strategy.
+3. Coming soon: observability and capacity planning.
+4. Coming soon: security hardening and air-gapped installs.
+</Steps>

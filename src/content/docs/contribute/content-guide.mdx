@@ -1,0 +1,52 @@
+---
+title: Content guide
+description: How to add a concept, tutorial, recipe, demo, or blog post, with templates and a style checklist.
+type: guide
+duration: 6 min
+sidebar:
+  order: 1
+---
+
+import { FileTree, Steps } from '@astrojs/starlight/components';
+
+## Where content lives
+
+<FileTree>
+- src/content/docs/
+  - start-here/
+  - concepts/ one idea per page
+  - tutorials/ step-by-step, ends with a working result
+  - recipes/ one focused integration task
+  - demos/ end-to-end reference apps
+  - blog/ dated posts
+- templates/ copy these to start a new page
+</FileTree>
+
+## Add a page
+
+<Steps>
+1. Copy the matching file from `templates/` into the right folder. The file name becomes the URL (`recipes/my-recipe.mdx` → `/recipes/my-recipe/`).
+2. Fill in the frontmatter: `title`, `description`, `type`, `level`, `duration`, `tags`. Blog posts also need `date` and `author`.
+3. Run `npm run dev` and check the page at `http://localhost:4321`.
+4. Open a pull request. The page automatically appears in the sidebar and in its section index.
+</Steps>
+
+## Frontmatter reference
+
+| Field | Values | Purpose |
+| --- | --- | --- |
+| `type` | `concept`, `tutorial`, `recipe`, `demo`, `blog`, `guide` | Shown as a badge |
+| `level` | `beginner`, `intermediate`, `advanced` | Badge and section filters |
+| `duration` | e.g. `15 min` | Time estimate badge |
+| `tags` | list of strings | Future search and topic pages |
+| `sidebar.order` | number | Order in the sidebar and index |
+| `draft` | `true` | Hides the page from production builds |
+
+## Style checklist
+
+- Lead with **what the reader will have** when they finish.
+- List prerequisites before step 1.
+- Use the `NAI_BASE_URL`, `NAI_API_KEY`, `NAI_MODEL` variables in all code.
+- Put product-version-specific details in an `<Aside>` and name the release.
+- End tutorials with a **Check your work** section and a **Next** link.
+- Diagrams: use the `<Mermaid>` component.

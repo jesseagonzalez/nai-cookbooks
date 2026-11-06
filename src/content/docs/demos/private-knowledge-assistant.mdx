@@ -1,0 +1,69 @@
+---
+title: Private enterprise knowledge assistant
+description: A chat assistant that answers questions over internal documents, fully on-prem, built on NAI, a vector database, and Open WebUI.
+type: demo
+level: advanced
+duration: 60 min
+tags: [rag, showcase, open-webui]
+sidebar:
+  order: 1
+---
+
+import { Aside, Steps, Tabs, TabItem } from '@astrojs/starlight/components';
+import Mermaid from '~/components/Mermaid.astro';
+
+## The story
+
+> *"Our policies, runbooks, and contracts are spread across thousands of documents. People can't find answers, and we can't send that data to a public AI service."*
+
+This demo shows a private assistant that answers in plain language, cites its sources, and keeps every byte on your infrastructure.
+
+## Architecture
+
+<Mermaid code={`
+flowchart TB
+  U[Users] --> W[Open WebUI]
+  W -->|chat| C[NAI chat endpoint]
+  W -->|retrieve| R[RAG service]
+  R --> V[(Vector DB)]
+  R -->|embed| E[NAI embeddings endpoint]
+  I[Ingestion job] --> E
+  I --> V
+  S[(Document shares)] --> I
+`} />
+
+## What you'll show
+
+<Steps>
+1. Ask a question with a well-known answer and highlight the **cited source**.
+2. Ask something *not* in the documents and show the assistant declining to make things up.
+3. Open the NAI dashboard and show **usage per endpoint and API key**.
+4. Scale the chat endpoint to two replicas live and explain capacity planning.
+</Steps>
+
+## Run it
+
+<Tabs>
+  <TabItem label="Quick start">
+  ```bash
+  git clone <demo-repo-url> && cd private-knowledge-assistant
+  cp .env.example .env   # fill in NAI_BASE_URL, NAI_API_KEY, NAI_MODEL, NAI_EMBED_MODEL
+  docker compose up -d
+  ```
+  </TabItem>
+  <TabItem label="Kubernetes">
+  ```bash
+  helm install pka ./charts/pka -n pka --create-namespace -f values.yaml
+  ```
+  </TabItem>
+</Tabs>
+
+<Aside type="note" title="Placeholder">
+  The demo repository link and charts are placeholders until the reference app is published.
+</Aside>
+
+## Talking points
+
+- **Data sovereignty:** prompts, documents, and embeddings never leave the cluster.
+- **Cost predictability:** GPU capacity you own, not per-token billing.
+- **Swap models freely:** endpoints are OpenAI-compatible, so upgrading the model is a config change.

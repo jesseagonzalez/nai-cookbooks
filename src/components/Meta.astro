@@ -1,0 +1,20 @@
+---
+interface Props {
+  level?: string;
+  type?: string;
+  duration?: string;
+  date?: Date;
+  author?: string;
+}
+const { level, type, duration, date, author } = Astro.props;
+const label = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+---
+{(level || type || duration || date) && (
+  <div class="academy-meta">
+    {type && <span class="academy-pill">{label(type)}</span>}
+    {level && <span class="academy-pill" data-level={level}>{label(level)}</span>}
+    {duration && <span class="academy-pill">⏱ {duration}</span>}
+    {date && <span class="academy-pill">{date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' })}</span>}
+    {author && <span class="academy-pill">{author}</span>}
+  </div>
+)}

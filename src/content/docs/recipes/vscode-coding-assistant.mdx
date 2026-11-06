@@ -1,0 +1,33 @@
+---
+title: Private coding assistant in VS Code
+description: Point the Continue extension at an NAI endpoint for chat and code help that never leaves your network.
+type: recipe
+level: beginner
+duration: 5 min
+tags: [ide, vscode, continue, developer-tools]
+sidebar:
+  order: 4
+---
+
+**You need:** VS Code with the [Continue](https://continue.dev) extension, and an endpoint serving a code-capable model.
+
+Add a model to Continue's config file (`~/.continue/config.yaml`):
+
+```yaml title="~/.continue/config.yaml"
+name: NAI assistant
+version: 0.0.1
+models:
+  - name: NAI (private)
+    provider: openai
+    model: <your-endpoint-name>
+    apiBase: https://<your-nai-host>/<api-path>/v1
+    apiKey: ${{ secrets.NAI_API_KEY }}
+    roles: [chat, edit, apply]
+```
+
+Reload VS Code, open the Continue panel, and select **NAI (private)**.
+
+## Tips
+
+- Use a smaller, faster model for autocomplete and a larger one for chat.
+- Ask your platform team for a key scoped to coding-model endpoints only.

@@ -1,0 +1,37 @@
+---
+title: Welcome to the Academy
+description: What Nutanix Enterprise AI is, who this site is for, and how the content is organized.
+type: guide
+level: beginner
+duration: 5 min
+---
+
+import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+import { withBase } from "~/lib/url";
+
+**Nutanix Enterprise AI (NAI)** lets you run large language models and other generative AI models on infrastructure you control, on premises, at the edge, or in your own cloud accounts, and expose them to applications through secure, OpenAI-compatible API endpoints.
+
+This Academy teaches you how to use it, whether you have never deployed a model before or you are designing a multi-cluster AI platform.
+
+## How the content is organized
+
+| Section | What it's for | Typical length |
+| --- | --- | --- |
+| **Concepts** | Explain one idea clearly, with diagrams. No setup required. | 5–10 min |
+| **Tutorials** | Guided, ordered steps toward a working result. | 20–60 min |
+| **Recipes** | One focused task, copy-paste ready. Assumes you have a working endpoint. | 5–15 min |
+| **Demos & showcases** | Complete reference apps and the story behind them. | Varies |
+| **Blog** | News, deep dives, and lessons from the field. | Varies |
+
+Every page shows its **level** (Beginner, Intermediate, Advanced) and an estimated **time** under the title, so you can tell at a glance if it's for you.
+
+<Aside type="caution" title="Always check the product docs">
+  Product specifics such as supported versions, prerequisites, and UI labels change between releases. Each tutorial lists the release it was written against. When in doubt, the official Nutanix documentation on the Nutanix Support Portal is the source of truth.
+</Aside>
+
+## Where to go next
+
+<CardGrid>
+  <LinkCard title="Choose a learning path" href={withBase("/start-here/learning-paths/")} />
+  <LinkCard title="AI inference basics" href={withBase("/concepts/ai-inference-basics/")} />
+</CardGrid>

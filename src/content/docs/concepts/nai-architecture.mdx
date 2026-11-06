@@ -1,0 +1,51 @@
+---
+title: How Nutanix Enterprise AI works
+description: The building blocks (Kubernetes platform, model catalog, endpoints, API keys) and how a request flows through them.
+type: concept
+level: beginner
+duration: 10 min
+tags: [architecture, kubernetes]
+sidebar:
+  order: 2
+---
+
+import { Aside } from '@astrojs/starlight/components';
+import Mermaid from '~/components/Mermaid.astro';
+
+Nutanix Enterprise AI is a Kubernetes application that turns GPU-equipped clusters into a private, self-service model-serving platform.
+
+## The building blocks
+
+| Component | What it does |
+| --- | --- |
+| **Kubernetes cluster** | Where NAI runs. Commonly Nutanix Kubernetes Platform (NKP); other CNCF-conformant distributions, including managed public-cloud Kubernetes, may also be supported. |
+| **GPU nodes** | Worker nodes with NVIDIA GPUs that host model replicas. |
+| **Model storage** | Shared storage where downloaded model weights are kept so replicas can load them. |
+| **Model catalog** | Import models from sources such as Hugging Face or NVIDIA NIM, or bring your own. |
+| **Endpoints** | A running, scalable deployment of one model, reachable over an OpenAI-compatible API. |
+| **API keys** | Scoped credentials that apps use to call endpoints. |
+| **Dashboard** | Web UI for admins and users to manage models, endpoints, keys, and usage. |
+
+## Request flow
+
+<Mermaid code={`
+sequenceDiagram
+  participant App
+  participant Gateway as NAI API gateway
+  participant EP as Endpoint (model replicas)
+  App->>Gateway: POST /chat/completions + API key
+  Gateway->>Gateway: Authenticate & route
+  Gateway->>EP: Forward request
+  EP-->>Gateway: Streamed tokens
+  Gateway-->>App: OpenAI-format response
+`} />
+
+## Roles
+
+- **Admins** install NAI, connect model sources, and manage GPU capacity.
+- **Model owners** import models and create endpoints.
+- **Developers** get API keys and call endpoints from apps and tools.
+
+<Aside type="note">
+  Exact prerequisites (Kubernetes versions, ingress, storage classes, GPU operator) vary by release. Check the release notes for the version you are installing.
+</Aside>
