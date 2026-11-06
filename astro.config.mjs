@@ -28,6 +28,7 @@ export default defineConfig({
         PageTitle: './src/components/PageTitle.astro',
         MarkdownContent: './src/components/MarkdownContent.astro',
         ThemeProvider: './src/components/ThemeProvider.astro',
+        Footer: './src/components/Footer.astro',
       },
       social: [
         { icon: 'github', label: 'GitHub', href: 'https://github.com/jesseagonzalez/nai-cookbooks' },

@@ -13,3 +13,14 @@ const current = Astro.locals.starlightRoute.entry.id?.split('/')[0] ?? '';
     ))}
   </nav>
 </div>
+
+<script>
+  // Press "/" to open search, like the prototype.
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== '/' || e.altKey || e.ctrlKey || e.metaKey) return;
+    const t = e.target as HTMLElement;
+    if (t.closest('input, textarea, select, [contenteditable]') || document.querySelector('dialog[open]')) return;
+    const open = document.querySelector<HTMLButtonElement>('site-search button[data-open-modal]');
+    if (open) { e.preventDefault(); open.click(); }
+  });
+</script>

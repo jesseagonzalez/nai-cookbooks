@@ -8,6 +8,7 @@ import { Image } from 'astro:assets';
 import { formats, getResources, typeLabel, cap } from '~/lib/resources';
 import { withBase } from '~/lib/url';
 import chevron from '~/assets/chevron.png';
+import { previewOf } from '~/lib/preview';
 
 interface Props { dir?: string }
 const { dir } = Astro.props;
@@ -59,6 +60,8 @@ const showcase = dir === 'showcase';
     {items.map((e) => {
       const href = withBase(`/${e.id}/`);
       const cover = e.data.cover || e.data.coverLabel;
+      const pv = previewOf(e.body);
+      const openLabel = e.data.type === 'demo' ? 'lab' : e.data.type === 'showcase' ? 'scenario' : 'resource';
       return (
         <article class:list={['ll-card', { 'has-cover': cover }]} data-tab={tabFor(e.data.type)} data-level={e.data.level ?? ''} data-topic={e.data.topic ?? ''} data-task={e.data.task ?? ''} data-tags={JSON.stringify(e.data.tags)} data-id={e.id}>
           {e.data.cover && (
@@ -84,14 +87,28 @@ const showcase = dir === 'showcase';
               <span>{e.data.topic}</span>
             </div>
             <div class="ll-actions">
-              <a href={href}>Open {e.data.type === 'demo' ? 'lab' : e.data.type === 'showcase' ? 'scenario' : 'resource'} →</a>
+              <a href={href}>Open {openLabel} →</a>
+              <button type="button" class="ll-preview-btn" data-preview aria-label={`Preview ${e.data.title}`}>Preview</button>
               <span class="ll-done" hidden>✓ Completed</span>
             </div>
           </div>
+          <template data-preview-body>
+            <p class="ll-eyebrow">{[typeLabel(e.data.type), cap(e.data.level), e.data.duration].filter(Boolean).join(' / ')}</p>
+            <h2>{e.data.title}</h2>
+            <p class="ll-pv-summary">{e.data.description}</p>
+            {e.data.tags.length > 0 && <div class="ll-chips">{e.data.tags.map((t) => <span class="ll-chip">{t}</span>)}</div>}
+            {pv.intro && <p>{pv.intro}</p>}
+            {pv.sections.length > 0 && (<><h3>What you’ll cover</h3><ul>{pv.sections.map((s) => <li>{s}</li>)}</ul></>)}
+            <a class="ll-btn primary" href={href}>Open full {openLabel} →</a>
+          </template>
         </article>
       );
     })}
   </div>
+  <dialog class="ll-dialog" data-preview-dialog aria-label="Resource preview">
+    <div class="ll-dialog-head"><span class="ll-eyebrow">Nutanix AI Labs / Preview</span><button type="button" data-close aria-label="Close preview">✕</button></div>
+    <article data-preview-article></article>
+  </dialog>
   <p class="ll-empty" hidden data-empty>No resources match these filters. Try another topic, task, tag, or skill level.</p>
 </div>
 
@@ -117,6 +134,12 @@ const showcase = dir === 'showcase';
         c.hidden = !show; if (show) n++;
       }
       lib.dataset.tabActive = tab;
+      document.querySelectorAll<HTMLElement>('[data-library-title]').forEach((h) => {
+        h.textContent = tab === 'Showcase' ? 'AI Showcase' : 'Explore the resource library';
+      });
+      document.querySelectorAll<HTMLElement>('[data-library-sub]').forEach((p) => {
+        p.textContent = tab === 'Showcase' ? 'Try an interactive lab or step through a sample AI application.' : 'Find resources by topic, task, format, and skill level.';
+      });
       lib.querySelector('[data-count]')!.textContent = `${String(n).padStart(2, '0')} ${n === 1 ? 'resource' : 'resources'}`;
       lib.querySelector<HTMLElement>('[data-empty]')!.hidden = n > 0;
       lib.querySelectorAll<HTMLButtonElement>('.ll-chip').forEach((b) => b.setAttribute('aria-pressed', String(chosen.has(b.dataset.tag!))));
@@ -129,9 +152,20 @@ const showcase = dir === 'showcase';
       if (picker) [...picker.options].forEach((o) => { if (o.value) o.hidden = chosen.has(o.value); });
     };
     const toggle = (t: string) => { chosen.has(t) ? chosen.delete(t) : chosen.add(t); apply(); };
+    const dialog = lib.querySelector<HTMLDialogElement>('[data-preview-dialog]')!;
+    const article = dialog.querySelector<HTMLElement>('[data-preview-article]')!;
+    dialog.querySelector('[data-close]')!.addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', (ev) => { if (ev.target === dialog) dialog.close(); });
     lib.addEventListener('click', (ev) => {
-      const chip = (ev.target as HTMLElement).closest<HTMLElement>('.ll-chip');
-      if (chip) toggle(chip.dataset.tag!);
+      const t = ev.target as HTMLElement;
+      const chip = t.closest<HTMLElement>('.ll-cards .ll-chip, [data-active-tags] .ll-chip');
+      if (chip?.dataset.tag) { toggle(chip.dataset.tag); return; }
+      const btn = t.closest<HTMLElement>('[data-preview]');
+      if (btn) {
+        const tpl = btn.closest('.ll-card')!.querySelector<HTMLTemplateElement>('template[data-preview-body]')!;
+        article.replaceChildren(tpl.content.cloneNode(true));
+        dialog.showModal();
+      }
     });
     picker?.addEventListener('change', () => { if (picker.value) toggle(picker.value); picker.selectedIndex = 0; });
     const setTab = (t: string) => {
@@ -142,7 +176,9 @@ const showcase = dir === 'showcase';
     tabs.forEach((b) => b.addEventListener('click', () => { setTab(b.dataset.tab!); history.replaceState(null, '', b.dataset.tab ? `#${b.dataset.tab.toLowerCase()}` : '#library'); }));
     selects.forEach((s) => s.addEventListener('change', apply));
     lib.querySelector('[data-clear]')!.addEventListener('click', () => { selects.forEach((s) => (s.selectedIndex = 0)); chosen.clear(); apply(); });
-    const fromHash = tabs.find((b) => b.dataset.tab && `#${b.dataset.tab.toLowerCase()}` === location.hash);
+    const alias: Record<string, string> = { '#playbooks': '#cookbook', '#demos': '#showcase' };
+    const hash = alias[location.hash] ?? location.hash;
+    const fromHash = tabs.find((b) => b.dataset.tab && `#${b.dataset.tab.toLowerCase()}` === hash);
     if (tabs.length) setTab(fromHash?.dataset.tab ?? ''); else apply();
   });
 </script>

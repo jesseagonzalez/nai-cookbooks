@@ -1,11 +1,13 @@
 ---
 import Default from '@astrojs/starlight/components/PageTitle.astro';
 import Meta from './Meta.astro';
-import { typeLabel } from '~/lib/resources';
+import { typeLabel, cap } from '~/lib/resources';
+import { withBase } from '~/lib/url';
 const { entry } = Astro.locals.starlightRoute;
 const { level, type, duration, date, author, topic } = entry.data;
 const eyebrow = [typeLabel(type), topic].filter(Boolean).join(' · ');
 ---
+{type && type !== 'guide' && <a class="ll-back" href={withBase(`/${entry.id.split('/')[0]}/`)}>← Back to {cap(entry.id.split('/')[0])}</a>}
 {eyebrow && <p class="ll-eyebrow ll-title-eyebrow">{eyebrow}</p>}
 <Default />
 {entry.data.description && type && <p class="ll-lede">{entry.data.description}</p>}

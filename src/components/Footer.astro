@@ -1,0 +1,16 @@
+---
+import Default from '@astrojs/starlight/components/Footer.astro';
+import { withBase } from '~/lib/url';
+import logoLight from '~/assets/nutanix-light.svg';
+import logoDark from '~/assets/nutanix-dark.svg';
+---
+<Default />
+<div class="ll-footer">
+  <a class="ll-footer-logo" href={withBase('/')}>
+    <img class="light:sl-hidden" src={logoDark.src} alt="" width="102" height="13" />
+    <img class="dark:sl-hidden" src={logoLight.src} alt="" width="102" height="13" />
+    <span>Nutanix AI Labs</span>
+  </a>
+  <p>A field guide to Nutanix Enterprise AI.</p>
+  <a href="#_top">Back to top ↑</a>
+</div>

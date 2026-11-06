@@ -2,6 +2,8 @@
 import { Image } from 'astro:assets';
 import chevron from '~/assets/chevron.png';
 import { withBase } from '~/lib/url';
+import { getResources } from '~/lib/resources';
+const featured = (await getResources('showcase')).filter((e) => e.data.cover || e.data.coverLabel);
 ---
 <section class="ll-hero not-content">
   <div class="ll-hero-intro">
@@ -13,7 +15,59 @@ import { withBase } from '~/lib/url';
       <a class="ll-btn" href={withBase('/showcase/')}>Explore the showcase <span aria-hidden="true">→</span></a>
     </div>
   </div>
-  <div class="ll-hero-art" aria-hidden="true">
-    <Image src={chevron} alt="" widths={[600, 1000]} sizes="(max-width: 50rem) 100vw, 45vw" loading="eager" />
+  <div class="ll-hero-side">
+    <div class="ll-hero-art" aria-hidden="true">
+      <Image src={chevron} alt="" widths={[600, 1000]} sizes="(max-width: 50rem) 100vw, 45vw" loading="eager" />
+    </div>
+    <section class="ll-featured" aria-label="Featured showcase" data-featured>
+      <div class="ll-featured-bar">
+        <span class="ll-eyebrow">Featured showcase</span>
+        <div class="ll-featured-controls">
+          <button type="button" data-prev aria-label="Previous showcase">←</button>
+          <button type="button" data-next aria-label="Next showcase">→</button>
+          <button type="button" data-pause>Pause</button>
+        </div>
+      </div>
+      {featured.map((e, i) => (
+        <a class="ll-feature" href={withBase(`/${e.id}/`)} hidden={i !== 0} data-slide>
+          {e.data.cover
+            ? <Image src={e.data.cover} alt="" widths={[480, 840]} sizes="(max-width: 50rem) 90vw, 30rem" loading={i === 0 ? 'eager' : 'lazy'} />
+            : <span class="ll-feature-art"><Image src={chevron} alt="" widths={[480, 840]} sizes="30rem" loading="lazy" /><span>{e.data.coverLabel}</span></span>}
+          <span class="ll-feature-caption"><strong>{e.data.title}</strong><span>Open walkthrough →</span></span>
+        </a>
+      ))}
+      <p class="ll-feature-status" aria-live="off" data-status>1 / {featured.length}</p>
+    </section>
   </div>
 </section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-featured]').forEach((box) => {
+    const slides = [...box.querySelectorAll<HTMLElement>('[data-slide]')];
+    const status = box.querySelector<HTMLElement>('[data-status]')!;
+    const pause = box.querySelector<HTMLButtonElement>('[data-pause]')!;
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let index = 0, playing = !motion.matches, hovering = false;
+    let timer: ReturnType<typeof setInterval> | undefined;
+    const show = () => {
+      slides.forEach((s, i) => (s.hidden = i !== index));
+      status.textContent = `${index + 1} / ${slides.length}`;
+    };
+    const advance = (d: number) => { index = (index + d + slides.length) % slides.length; show(); };
+    const schedule = () => {
+      clearInterval(timer);
+      pause.textContent = playing ? 'Pause' : 'Play';
+      status.setAttribute('aria-live', playing ? 'off' : 'polite');
+      if (playing && !hovering && !document.hidden) timer = setInterval(() => advance(1), 6500);
+    };
+    box.querySelector('[data-prev]')!.addEventListener('click', () => { advance(-1); schedule(); });
+    box.querySelector('[data-next]')!.addEventListener('click', () => { advance(1); schedule(); });
+    pause.addEventListener('click', () => { playing = !playing; schedule(); });
+    box.addEventListener('mouseenter', () => { hovering = true; schedule(); });
+    box.addEventListener('mouseleave', () => { hovering = false; schedule(); });
+    box.addEventListener('focusin', () => { if (playing) { playing = false; schedule(); } });
+    motion.addEventListener('change', () => { if (motion.matches) { playing = false; schedule(); } });
+    document.addEventListener('visibilitychange', schedule);
+    show(); schedule();
+  });
+</script>
