@@ -78,7 +78,7 @@ h1#_top { font-size: clamp(2.2rem, 4.5vw, 3.6rem); letter-spacing: -0.05em; }
 header.header { border-bottom: 1px solid var(--sl-color-gray-5); }
 .ll-header { display: flex; align-items: center; gap: 1.5rem; height: 100%; }
 .ll-header > :first-child { flex: 1; min-width: 0; }
-.site-title img { height: 1.05rem !important; }
+
 .site-title span {
   color: var(--sl-color-white);
   font-size: 0.85rem;
@@ -179,7 +179,7 @@ header.header { border-bottom: 1px solid var(--sl-color-gray-5); }
 .ll-footer p { margin: 0; color: var(--sl-color-gray-3); }
 .ll-footer > a:last-child { color: var(--sl-color-accent); text-decoration: none; }
 .ll-footer-logo { display: inline-flex; align-items: center; gap: 0.8rem; color: var(--sl-color-white); text-decoration: none; font-weight: 600; }
-.ll-footer-logo img { height: 0.8rem; width: auto; }
+.ll-footer-logo svg { height: 0.7rem; width: auto; }
 .ll-footer-logo span { padding-left: 0.8rem; border-left: 1px solid var(--ll-field); }
 /* First card carries the gradient rule, like the prototype */
 .ll-library:not([data-tab-active='Showcase']) .ll-card:not([hidden]):first-child::before { opacity: 1; }

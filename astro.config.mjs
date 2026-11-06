@@ -16,15 +16,11 @@ export default defineConfig({
       title: 'Nutanix AI Labs',
       description:
         'A field guide to Nutanix Enterprise AI: learn to deploy, integrate, and operate private AI, from first concepts to production patterns.',
-      logo: {
-        light: './src/assets/nutanix-light.svg',
-        dark: './src/assets/nutanix-dark.svg',
-        alt: 'Nutanix',
-      },
       customCss: ['./src/styles/theme.css'],
       lastUpdated: true,
       components: {
         Header: './src/components/Header.astro',
+        SiteTitle: './src/components/SiteTitle.astro',
         PageTitle: './src/components/PageTitle.astro',
         MarkdownContent: './src/components/MarkdownContent.astro',
         ThemeProvider: './src/components/ThemeProvider.astro',
