@@ -6,7 +6,7 @@ import { docsSchema } from '@astrojs/starlight/schema';
 /** Extra frontmatter used by Nutanix AI Labs resource pages. All optional so plain pages still work. */
 export const levels = ['beginner', 'intermediate', 'advanced'] as const;
 export const contentTypes = [
-  'concept', 'demo', 'cookbook', 'playbook', 'recipe', 'showcase', 'blog', 'guide',
+  'concept', 'demo', 'cookbook', 'recipe', 'showcase', 'blog', 'guide',
 ] as const;
 
 export const collections = {
@@ -26,7 +26,7 @@ export const collections = {
         cover: image().optional(),
         /** Text cover for scenarios without an image. */
         coverLabel: z.string().optional(),
-        /** API surface for integration playbooks, e.g. "Chat Completions". */
+        /** API surface for integration cookbooks, e.g. "Chat Completions". */
         interface: z.string().optional(),
         /** External references shown at the end of the page. */
         sources: z.array(z.object({ label: z.string(), url: z.string() })).default([]),

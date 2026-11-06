@@ -1,6 +1,6 @@
 ---
 title: Content guide
-description: How to add a concept, playbook, recipe, demo, or blog post, with templates and a style checklist.
+description: How to add a concept, cookbook, recipe, demo, or blog post, with templates and a style checklist.
 type: guide
 duration: 6 min
 sidebar:
@@ -15,7 +15,7 @@ import { FileTree, Steps } from '@astrojs/starlight/components';
 - src/content/docs/
   - start-here/
   - learn/ one idea per page (type: concept)
-  - cookbook/ playbooks and cookbooks (type: playbook | cookbook)
+  - cookbook/ step-by-step cookbooks (type: cookbook)
   - recipes/ one focused check or task (type: recipe)
   - showcase/ interactive labs (type: demo) and scenarios (type: showcase)
   - blog/ dated posts (type: blog)
@@ -35,7 +35,7 @@ import { FileTree, Steps } from '@astrojs/starlight/components';
 
 | Field | Values | Purpose |
 | --- | --- | --- |
-| `type` | `concept`, `demo`, `cookbook`, `playbook`, `recipe`, `showcase`, `blog`, `guide` | Library tab and badge |
+| `type` | `concept`, `demo`, `cookbook`, `recipe`, `showcase`, `blog`, `guide` | Library tab and badge |
 | `topic` | e.g. `Endpoint APIs`, `Kubernetes & NKP` | Library topic filter |
 | `task` | e.g. `Connect & integrate`, `Benchmark & tune` | Library task filter |
 | `sources` | list of `{ label, url }` | References at the end of the page |
