@@ -1,7 +1,12 @@
 ---
 import Default from '@astrojs/starlight/components/PageTitle.astro';
 import Meta from './Meta.astro';
-const { level, type, duration, date, author } = Astro.locals.starlightRoute.entry.data;
+import { typeLabel } from '~/lib/resources';
+const { entry } = Astro.locals.starlightRoute;
+const { level, type, duration, date, author, topic } = entry.data;
+const eyebrow = [typeLabel(type), topic].filter(Boolean).join(' · ');
 ---
+{eyebrow && <p class="ll-eyebrow ll-title-eyebrow">{eyebrow}</p>}
 <Default />
-<Meta {level} {type} {duration} {date} {author} />
+{entry.data.description && type && <p class="ll-lede">{entry.data.description}</p>}
+<Meta {level} {duration} {date} {author} id={type && type !== 'guide' ? entry.id : undefined} />

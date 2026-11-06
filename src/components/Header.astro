@@ -1,0 +1,15 @@
+---
+/** Starlight header plus the Latent Lab format navigation. */
+import Default from '@astrojs/starlight/components/Header.astro';
+import { formats } from '~/lib/resources';
+import { withBase } from '~/lib/url';
+const current = Astro.locals.starlightRoute.entry.id?.split('/')[0] ?? '';
+---
+<div class="ll-header">
+  <Default />
+  <nav class="ll-nav" aria-label="Resource formats">
+    {formats.map((f) => (
+      <a href={withBase(`/${f.dir}/`)} aria-current={current === f.dir ? 'page' : undefined}>{f.label}</a>
+    ))}
+  </nav>
+</div>

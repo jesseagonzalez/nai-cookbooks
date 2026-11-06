@@ -1,0 +1,13 @@
+---
+import Default from '@astrojs/starlight/components/MarkdownContent.astro';
+const sources = Astro.locals.starlightRoute.entry.data.sources ?? [];
+---
+<Default><slot /></Default>
+{sources.length > 0 && (
+  <section class="ll-refs">
+    <h2 id="references">References</h2>
+    <ul>
+      {sources.map((s) => <li><a href={s.url} target="_blank" rel="noopener">{s.label} ↗</a></li>)}
+    </ul>
+  </section>
+)}

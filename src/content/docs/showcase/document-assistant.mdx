@@ -1,0 +1,23 @@
+---
+title: "Ground a document assistant"
+description: "Inspect a retrieval result, a cited answer, and a missing-policy case."
+type: showcase
+level: intermediate
+duration: 7 min
+topic: "Retrieval & RAG"
+task: "Connect & integrate"
+sources:
+  - label: "Nutanix Enterprise AI datasheet"
+    url: "https://www.nutanix.com/library/datasheets/nutanix-enterprise-ai"
+sidebar:
+  order: 2
+---
+import LabDemo from '~/components/LabDemo.astro';
+
+This sample demonstrates an application pattern. The application retrieves passages and sends them with the question to an NAI inference endpoint. The browser example uses sample handbook data and prewritten responses.
+
+<LabDemo kind="document-assistant" />
+
+## 01 · Validate with known questions
+
+Check whether the correct passage was retrieved. Then check whether the answer is supported by that passage. Include questions the handbook cannot answer.

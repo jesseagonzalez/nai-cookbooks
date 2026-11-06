@@ -1,6 +1,6 @@
-# Nutanix Enterprise AI Academy
+# Latent Lab: a field guide to Nutanix Enterprise AI
 
-An education site for Nutanix Enterprise AI: concepts, tutorials, recipes, demos, and a blog, for beginners through experts.
+An education site for Nutanix Enterprise AI with Learn, Demos, Cookbook, Recipes, Showcase, and Blog resources for beginners through experts. Live at https://jesseagonzalez.github.io/nai-cookbooks/
 
 Built with [Astro](https://astro.build) + [Starlight](https://starlight.astro.build): fast static output, built-in search, dark/light mode, and pages written in Markdown/MDX.
 
@@ -17,7 +17,7 @@ npm run preview    # serve ./dist
 
 ```
 src/content/docs/    pages (folder = section, file = URL)
-src/components/      ContentIndex (filterable section index), Mermaid, page meta badges
+src/components/      ResourceLibrary (filterable library), LabDemo (browser labs), HomeHero, LearningPaths, Mermaid
 src/styles/theme.css colors and layout tweaks
 templates/           starter files for each content type
 ```

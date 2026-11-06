@@ -1,0 +1,37 @@
+---
+title: "Measure endpoint performance"
+description: "Use TTFT, inter-token latency, and goodput to compare serving configurations."
+type: playbook
+level: advanced
+duration: 15 min
+topic: "Inference Performance"
+task: "Benchmark & tune"
+sources:
+  - label: "Nutanix Enterprise AI Design on NKP"
+    url: "https://portal.nutanix.com/page/documents/solutions/details?targetId=NVD-2057-NAI-Design-NKP%3Anvd-nai-nvd-dvh-r.html"
+  - label: "vLLM Recipes"
+    url: "https://recipes.vllm.ai/"
+sidebar:
+  order: 6
+---
+Use a representative workload to evaluate a deployment. Record the model and revision, hardware, runtime, request sizes, and client concurrency so results can be reproduced.
+
+## 01 · Set a workload and target
+
+Choose realistic prompt and output lengths. Define acceptable time to first token (TTFT), inter-token latency, and completion error rate before running a sweep.
+
+## 02 · Measure under load
+
+Warm the endpoint, then increase load in steps. For streaming, capture request start, first token, subsequent tokens, and completion. Report percentile latency alongside throughput and errors.
+
+## 03 · Compare goodput
+
+Count completed requests that meet your targets per unit time. Repeat under the same workload after changing one serving setting. Use vLLM Recipes for upstream examples and confirm the applicable settings in your NAI configuration.
+
+## 04 · Find the saturation point
+
+For each load step, compare p95 time to first token with completions per second and error rate. When throughput stops improving while tail latency rises, repeat that load step and inspect queueing and runtime metrics.
+
+## 05 · Record a reproducible result
+
+Keep the input and output token distributions, concurrency, warm-up policy, sampling parameters, runtime version, and measurement window with the results. Report the highest measured load that met the targets.

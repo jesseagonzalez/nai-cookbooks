@@ -1,0 +1,23 @@
+---
+title: "Test one MCP tool boundary"
+description: "Verify an allowed read-only call and an intentionally blocked call."
+type: recipe
+level: advanced
+duration: 5 min
+topic: "Agent Gateway & MCP"
+task: "Validate & verify"
+sources:
+  - label: "Nutanix Agent Gateway and MCP in NAI 2.8"
+    url: "https://next.nutanix.com/nutanix-agentic-ai-180/nutanix-enterprise-ai-nai-2-8-is-now-available-45852"
+sidebar:
+  order: 4
+---
+Use an NAI Agent Gateway lab configuration with one permitted tool and one read-only tool outside the client key’s scope.
+
+## 01 · Check the permitted call
+
+Invoke the permitted tool through the configured client and verify that the tool result reaches the agent.
+
+## 02 · Check the denial
+
+Use the same key to attempt the out-of-scope call through the supported client. Confirm the tool does not run and review available gateway audit evidence.

@@ -1,0 +1,23 @@
+---
+title: "Measure time to first token"
+description: "Capture first-token latency from a small streaming sample."
+type: recipe
+level: advanced
+duration: 5 min
+topic: "Inference Performance"
+task: "Benchmark & tune"
+sources:
+  - label: "Nutanix Enterprise AI Design on NKP"
+    url: "https://portal.nutanix.com/page/documents/solutions/details?targetId=NVD-2057-NAI-Design-NKP%3Anvd-nai-nvd-dvh-r.html"
+sidebar:
+  order: 5
+---
+Use a streaming endpoint and a client timer with a monotonic clock.
+
+## 01 · Capture the right event
+
+Start timing immediately before sending the request. Stop at the first event that contains generated content. Skip headers and role-only events.
+
+## 02 · Compare like for like
+
+After warm-up, run the same prompt several times with fixed generation settings. Compare the timings and record the model, client location, and concurrency. Use the benchmark playbook before making capacity decisions.

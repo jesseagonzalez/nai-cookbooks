@@ -1,50 +1,23 @@
 ---
-title: Nutanix Enterprise AI Academy
-description: Learn to deploy, operate, and build with Nutanix Enterprise AI, from first concepts to production patterns.
+title: Latent Lab
+description: A field guide to Nutanix Enterprise AI. Learn to deploy, integrate, and operate private AI, from first concepts to production patterns.
 template: splash
-hero:
-  title: Build with Nutanix Enterprise AI
-  tagline: Concepts, hands-on tutorials, copy-paste recipes, and real demos for running private, production-grade AI on your own infrastructure. For first-timers and seasoned platform engineers alike.
-  actions:
-    - text: Start learning
-      link: start-here/overview/
-      icon: right-arrow
-    - text: Browse recipes
-      link: recipes/
-      icon: open-book
-      variant: minimal
+pagefind: false
+tableOfContents: false
 ---
 
-import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+import HomeHero from '~/components/HomeHero.astro';
+import ResourceLibrary from '~/components/ResourceLibrary.astro';
+import LearningPaths from '~/components/LearningPaths.astro';
 
-## Pick your path
+<HomeHero />
 
-<CardGrid>
-  <Card title="New to AI" icon="star">
-    Learn what LLMs, inference, and endpoints are, and why running them on your own platform matters.
-    [Foundations path →](/start-here/learning-paths/#foundations)
-  </Card>
-  <Card title="Platform engineer" icon="setting">
-    Install Nutanix Enterprise AI on Kubernetes, size GPUs, and serve your first model.
-    [Operator path →](/start-here/learning-paths/#operator)
-  </Card>
-  <Card title="App developer" icon="laptop">
-    Call private endpoints with OpenAI-compatible SDKs, build RAG, and wire up your tools.
-    [Builder path →](/start-here/learning-paths/#builder)
-  </Card>
-  <Card title="Architect / expert" icon="rocket">
-    Multi-model fleets, observability, security, and scaling patterns for production.
-    [Expert path →](/start-here/learning-paths/#expert)
-  </Card>
-</CardGrid>
+<section id="library" class="ll-section not-content">
+  <p class="ll-eyebrow">Resource library</p>
+  <h2 class="ll-rule">Explore the resource library</h2>
+  <p class="ll-sub">Find resources by topic, task, format, and skill level.</p>
+</section>
 
-## What's inside
+<ResourceLibrary />
 
-<CardGrid>
-  <LinkCard title="Concepts" description="Short explainers on the ideas behind private AI: inference, models, endpoints, GPUs." href="concepts/ai-inference-basics/" />
-  <LinkCard title="Tutorials" description="Step-by-step walkthroughs, from install to your first chat completion." href="tutorials/" />
-  <LinkCard title="Recipes" description="Focused, copy-paste cookbooks for integrating with LangChain, Open WebUI, IDEs, and more." href="recipes/" />
-  <LinkCard title="Demos & showcases" description="End-to-end reference apps you can run, adapt, and show to stakeholders." href="demos/" />
-  <LinkCard title="Blog" description="Release notes, field stories, and deep dives from the team." href="blog/" />
-  <LinkCard title="Contribute" description="Templates and a style guide for adding your own content." href="contribute/content-guide/" />
-</CardGrid>
+<LearningPaths />

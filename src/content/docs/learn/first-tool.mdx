@@ -1,0 +1,24 @@
+---
+title: "Give an assistant a tool"
+description: "Trace a tool call from requested arguments to final answer."
+type: concept
+level: intermediate
+duration: 9 min
+topic: "Agent Gateway & MCP"
+task: "Learn concepts"
+sidebar:
+  order: 4
+---
+Tool calling lets an assistant request a named operation. Your application validates the request, runs the operation, and returns its result.
+
+## 01 · Define a narrow tool
+
+Use a read-only lookup_order tool that accepts one string, order_id. Check the ID format and the signed-in user’s access before fetching data.
+
+## 02 · Return a structured result
+
+For a permitted lookup, return a small object such as `{"order_id":"A-42","status":"shipped"}`. Return a distinct error for failed lookups so the assistant can report the failure.
+
+## 03 · Verify the final response
+
+Try unknown IDs and ambiguous requests. Check that the assistant asks for the missing ID or reports the failed lookup without inventing a status.

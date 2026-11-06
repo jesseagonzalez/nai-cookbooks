@@ -1,0 +1,29 @@
+---
+title: "Translate a vLLM recipe to NAI"
+description: "Separate upstream launch examples from release-specific NAI runtime settings."
+type: cookbook
+level: advanced
+duration: 11 min
+topic: "Model Serving"
+task: "Benchmark & tune"
+sources:
+  - label: "Nutanix Enterprise AI 2.8 release overview"
+    url: "https://next.nutanix.com/product-updates/nutanix-enterprise-ai-2-8-45849"
+  - label: "vLLM Recipes"
+    url: "https://recipes.vllm.ai/"
+sidebar:
+  order: 7
+---
+An upstream vLLM recipe helps identify model prerequisites, hardware constraints, and useful runtime arguments. NAI manages endpoint creation and runtime configuration through its own supported workflows.
+
+## 01 · Capture the recipe inputs
+
+Write down the model revision, precision, context length, hardware, runtime version, and required launch arguments.
+
+## 02 · Map the settings
+
+Check the supported model catalog and runtime for your NAI release. If using custom vLLM settings, follow the documented workflow for experimental endpoints and confirm every argument.
+
+## 03 · Validate before promotion
+
+Check startup, run the same prompt suite against the baseline and candidate, and compare latency, output quality, and resource use.

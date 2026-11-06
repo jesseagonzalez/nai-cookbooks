@@ -1,0 +1,33 @@
+---
+title: "How language models work"
+description: "Follow text from tokens to a next-token prediction."
+type: concept
+level: beginner
+duration: 8 min
+topic: "Model Serving"
+task: "Learn concepts"
+sidebar:
+  order: 3
+---
+A language model turns text into token IDs and estimates a distribution for the next token. Text generation repeats that step, appending each chosen token to the context.
+
+## 01 · Start with tokens
+
+A token can be a word, a fragment, or punctuation. Tokenizers often include a leading space in a token. Use the Token Explorer to see a simplified split.
+
+## 02 · Add context
+
+The same prefix can lead to different continuations. Given “The bank”, a reference to a river makes “was muddy” more plausible, while an account balance changes the likely continuation.
+
+## 03 · Generate one step at a time
+
+Given “The capital of France is”, a model may assign Paris a high probability. The selected token becomes part of the prefix for the following prediction. A plausible continuation can still be wrong.
+
+<details>
+<summary>Quick check: does a high probability guarantee a true answer?</summary>
+
+No. Probability reflects how plausible the token is in context. Check factual claims against evidence.
+
+</details>
+
+Next, [try the Token Explorer](/demos/token-explorer/).

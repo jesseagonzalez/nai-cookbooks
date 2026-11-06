@@ -1,0 +1,23 @@
+---
+title: "From model to endpoint"
+description: "See what Kubernetes, an inference runtime, and an API endpoint each do."
+type: concept
+level: beginner
+duration: 6 min
+topic: "Model Serving"
+task: "Learn concepts"
+sources:
+  - label: "Nutanix Enterprise AI datasheet"
+    url: "https://www.nutanix.com/library/datasheets/nutanix-enterprise-ai"
+sidebar:
+  order: 2
+---
+A model contains learned weights. An inference runtime loads those weights and handles requests. Nutanix Enterprise AI (NAI) helps teams deploy and manage model-serving endpoints on supported Kubernetes infrastructure.
+
+## 01 · Follow the request
+
+A client sends a prompt to an endpoint with a client key. The serving stack validates access, runs inference, and returns generated text.
+
+## 02 · Choose a learning path
+
+Platform operators prepare the environment and publish endpoints. Application developers connect clients and verify output. AI engineers measure quality and performance under representative traffic.

@@ -1,0 +1,24 @@
+---
+title: "Write a testable prompt"
+description: "Specify the task, evidence, output, and fallback."
+type: cookbook
+level: beginner
+duration: 7 min
+topic: "Evaluation"
+task: "Learn concepts"
+sidebar:
+  order: 8
+---
+Turn “summarize this” into a prompt you can evaluate by specifying what to extract, where to look, and how to handle gaps.
+
+## 01 · Give the task and evidence
+
+“Extract the deadline and owner from the meeting notes below.” Delimit the notes so they are easy to distinguish from your instructions.
+
+## 02 · Choose a shape
+
+“Return two fields, deadline and owner. Use null for missing fields. Include a short supporting quote for each populated field.”
+
+## 03 · Try a counterexample
+
+Use a note with a deadline and no owner. Compare the output against the expected null, then try a note that mentions two deadlines. State how the model should handle ambiguity.

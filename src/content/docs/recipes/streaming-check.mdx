@@ -1,0 +1,23 @@
+---
+title: "Check whether a client streams"
+description: "Compare incremental delivery with a buffered response."
+type: recipe
+level: intermediate
+duration: 4 min
+topic: "Endpoint APIs"
+task: "Debug & troubleshoot"
+sources:
+  - label: "Nutanix endpoint validation and client examples"
+    url: "https://www.nutanix.com/tech-center/blog/reasoning-models-on-nutanix-enterprise-ai"
+sidebar:
+  order: 2
+---
+Use a working chat request and a prompt that produces several lines. Run the test from the same client network as the application.
+
+## 01 · Enable streaming
+
+Set stream to true in the chat request and use curl --no-buffer to see events as they arrive. Use the same URL, model ID, and authorization as your known-good request.
+
+## 02 · Verify delivery
+
+Look for multiple response events arriving over time. If direct delivery works but the app receives one burst, compare the app’s client and proxy buffering settings.

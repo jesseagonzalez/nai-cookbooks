@@ -1,0 +1,37 @@
+---
+title: "Connect tools with Agent Gateway"
+description: "Plan a scoped MCP integration and test the boundary around an agent."
+type: playbook
+level: advanced
+duration: 14 min
+topic: "Agent Gateway & MCP"
+task: "Connect & integrate"
+sources:
+  - label: "Nutanix Agent Gateway and MCP in NAI 2.8"
+    url: "https://next.nutanix.com/nutanix-agentic-ai-180/nutanix-enterprise-ai-nai-2-8-is-now-available-45852"
+  - label: "Nutanix Enterprise AI 2.8 release overview"
+    url: "https://next.nutanix.com/product-updates/nutanix-enterprise-ai-2-8-45849"
+sidebar:
+  order: 5
+---
+Nutanix Enterprise AI 2.8 documents MCP support through Agent Gateway. Check your release, license, and endpoint configuration before following the product procedure.
+
+## 01 · Start with one read-only tool
+
+Pick an MCP server and expose one low-risk capability in a lab. Identify its authentication, data boundary, and expected output.
+
+## 02 · Scope the connection
+
+Use the release-specific procedure to configure the MCP server and connector. Assign only the capabilities needed by the API client key.
+
+## 03 · Prove the boundary
+
+Test an allowed tool and a tool outside the key’s scope. Confirm the allowed tool returns the expected data and the disallowed tool is blocked. Review available gateway audit evidence.
+
+## 04 · Test missing and malformed input
+
+Send a request without a required tool argument. Verify that the client surfaces the validation failure and that the agent can ask for the missing value.
+
+## 05 · Verify key rotation
+
+In the lab, switch the client to a replacement key with the same intended scope. Repeat the allow and deny checks, then verify the retired key can no longer access the connector.

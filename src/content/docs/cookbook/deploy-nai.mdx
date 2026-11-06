@@ -1,0 +1,41 @@
+---
+title: "Plan a deployment on NKP"
+description: "Work through cluster readiness, installation, and endpoint verification."
+type: playbook
+level: intermediate
+duration: 15 min
+topic: "Kubernetes & NKP"
+task: "Deploy & configure"
+sources:
+  - label: "Nutanix Enterprise AI Design on NKP"
+    url: "https://portal.nutanix.com/page/documents/solutions/details?targetId=NVD-2057-NAI-Design-NKP%3Anvd-nai-nvd-dvh-r.html"
+  - label: "Nutanix Enterprise AI 2.8 release overview"
+    url: "https://next.nutanix.com/product-updates/nutanix-enterprise-ai-2-8-45849"
+sidebar:
+  order: 2
+---
+Use this walkthrough to plan a lab deployment on Nutanix Kubernetes Platform (NKP). Follow the installation documentation and compatibility guidance for the exact NAI and NKP releases you select.
+
+## 01 · Check platform readiness
+
+Record the NAI and NKP versions, supported accelerator and driver stack, available GPU capacity, storage class, DNS and TLS, and access to required registries. Check the requirements for your connected or disconnected deployment.
+
+## 02 · Install and validate the platform
+
+Follow the release-matched procedure for your deployment type. Confirm the platform services are healthy and the console is accessible over trusted TLS before importing a model.
+
+## 03 · Publish a lab endpoint
+
+Choose a supported model for your hardware. Import it, create an endpoint, and wait for it to become ready. Create an API client key with access to that endpoint.
+
+## 04 · Verify from a client
+
+Run a smoke test from the network your application will use. Confirm the served model identifier and a successful response. Record the deployed versions and endpoint configuration.
+
+## 05 · Capture the handoff
+
+Give the application team the endpoint’s API base URL, served model identifier, and instructions for obtaining a scoped client key. Share credentials through the approved secret store.
+
+## 06 · Troubleshoot readiness
+
+If an endpoint stays pending, check workload scheduling, accelerator capacity, and volume binding. If the runtime fails to start, inspect the workload events for registry access or model-loading errors. Re-run the same client smoke test after correcting the issue.

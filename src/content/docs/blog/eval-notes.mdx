@@ -1,0 +1,26 @@
+---
+title: "What a useful AI eval catches"
+description: "A field note on designing checks around real failures."
+type: blog
+level: intermediate
+duration: 6 min
+topic: "Evaluation"
+task: "Validate & verify"
+date: 2026-11-06
+author: Latent Lab
+sidebar:
+  order: 3
+---
+A document assistant can sound confident while giving the wrong policy. Start your evaluation with a handful of questions that expose where the answer can go wrong.
+
+## 01 · Include missing evidence
+
+Ask a question whose answer is absent from the corpus. Write down the expected behavior before running it. A passing answer should acknowledge the gap and avoid unsupported claims.
+
+## 02 · Separate retrieval and generation
+
+Track whether the correct passage reached the model. If it did, check whether the answer faithfully represents it. Those two observations point to different fixes.
+
+## 03 · Keep a regression set
+
+Add a representative example each time you fix a failure. Re-run the same cases after changing the prompt, corpus, or model, then inspect failures before shipping.

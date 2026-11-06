@@ -1,0 +1,42 @@
+---
+title: "Call an NAI endpoint with cURL"
+description: "Use the endpoint’s request example to verify access from a terminal."
+type: cookbook
+level: beginner
+duration: 8 min
+topic: "Endpoint APIs"
+task: "Connect & integrate"
+sources:
+  - label: "NAI 2.8 API Client Keys"
+    url: "https://portal.nutanix.com/page/documents/details?targetId=Nutanix-Enterprise-AI-v2_8%3Atop-nai-api-keys-c.html"
+  - label: "Nutanix endpoint validation and client examples"
+    url: "https://www.nutanix.com/tech-center/blog/reasoning-models-on-nutanix-enterprise-ai"
+sidebar:
+  order: 3
+---
+Start with a working request before wiring in an SDK or application. You’ll need an accessible chat-completions endpoint, a client key, and the served model identifier.
+
+## 01 · Get the request details
+
+Open your endpoint’s testing or client example. Copy its full chat completions URL, served model identifier, and documented Authorization header format.
+
+## 02 · Run a small request
+
+Set NAI_CHAT_URL and NAI_MODEL to the copied values. Load NAI_AUTHORIZATION from your secret store as the full Authorization header value. The example uses jq to encode the request safely.
+
+## 03 · Check the result
+
+Confirm the request succeeds and returns a chat completion. For an error, compare your URL, key scope, and model value with the console’s request example.
+
+## The request
+
+```bash title="smoke-test.sh"
+jq -n --arg model "$NAI_MODEL" '{
+  model: $model,
+  messages: [{role: "user", content: "Reply with OK."}]
+}' | curl --fail-with-body --silent --show-error "$NAI_CHAT_URL" \
+  -H "Authorization: $NAI_AUTHORIZATION" \
+  -H "Content-Type: application/json" --data-binary @-
+```
+
+Next, [try the simulated request](/demos/endpoint-lab/) to see how each setting changes the result.

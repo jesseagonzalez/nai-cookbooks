@@ -1,0 +1,27 @@
+---
+title: "An endpoint can be ready and still fail"
+description: "Trace an integration issue from the client to the serving runtime."
+type: blog
+level: intermediate
+duration: 6 min
+topic: "Endpoint APIs"
+task: "Debug & troubleshoot"
+sources:
+  - label: "NAI 2.8 API Client Keys"
+    url: "https://portal.nutanix.com/page/documents/details?targetId=Nutanix-Enterprise-AI-v2_8%3Atop-nai-api-keys-c.html"
+  - label: "Nutanix Enterprise AI 2.8 release overview"
+    url: "https://next.nutanix.com/product-updates/nutanix-enterprise-ai-2-8-45849"
+date: 2026-11-06
+author: Latent Lab
+sidebar:
+  order: 2
+---
+A ready endpoint can still be unreachable from an application network or deny a client key. Start with a minimal request from the same network as the app.
+
+## 01 · Separate the failure domains
+
+Check DNS, TLS, and routing first. Next verify authorization and the exact model identifier. Compare the application request against a known-good request.
+
+## 02 · Correlate evidence
+
+Record when the failure occurred and compare client logs with platform health, request metrics, and relevant runtime logs. Keep prompts and credentials out of diagnostic notes.

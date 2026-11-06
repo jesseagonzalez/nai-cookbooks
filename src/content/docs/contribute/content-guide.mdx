@@ -1,6 +1,6 @@
 ---
 title: Content guide
-description: How to add a concept, tutorial, recipe, demo, or blog post, with templates and a style checklist.
+description: How to add a concept, playbook, recipe, demo, or blog post, with templates and a style checklist.
 type: guide
 duration: 6 min
 sidebar:
@@ -14,11 +14,12 @@ import { FileTree, Steps } from '@astrojs/starlight/components';
 <FileTree>
 - src/content/docs/
   - start-here/
-  - concepts/ one idea per page
-  - tutorials/ step-by-step, ends with a working result
-  - recipes/ one focused integration task
-  - demos/ end-to-end reference apps
-  - blog/ dated posts
+  - learn/ one idea per page (type: concept)
+  - demos/ interactive browser labs (type: demo)
+  - cookbook/ playbooks and cookbooks (type: playbook | cookbook)
+  - recipes/ one focused check or task (type: recipe)
+  - showcase/ end-to-end examples (type: showcase)
+  - blog/ dated posts (type: blog)
 - templates/ copy these to start a new page
 </FileTree>
 
@@ -28,14 +29,17 @@ import { FileTree, Steps } from '@astrojs/starlight/components';
 1. Copy the matching file from `templates/` into the right folder. The file name becomes the URL (`recipes/my-recipe.mdx` → `/recipes/my-recipe/`).
 2. Fill in the frontmatter: `title`, `description`, `type`, `level`, `duration`, `tags`. Blog posts also need `date` and `author`.
 3. Run `npm run dev` and check the page at `http://localhost:4321`.
-4. Open a pull request. The page automatically appears in the sidebar and in its section index.
+4. Open a pull request. The page automatically appears in the sidebar, its section page, and the home page library.
 </Steps>
 
 ## Frontmatter reference
 
 | Field | Values | Purpose |
 | --- | --- | --- |
-| `type` | `concept`, `tutorial`, `recipe`, `demo`, `blog`, `guide` | Shown as a badge |
+| `type` | `concept`, `demo`, `cookbook`, `playbook`, `recipe`, `showcase`, `blog`, `guide` | Library tab and badge |
+| `topic` | e.g. `Endpoint APIs`, `Kubernetes & NKP` | Library topic filter |
+| `task` | e.g. `Connect & integrate`, `Benchmark & tune` | Library task filter |
+| `sources` | list of `{ label, url }` | References at the end of the page |
 | `level` | `beginner`, `intermediate`, `advanced` | Badge and section filters |
 | `duration` | e.g. `15 min` | Time estimate badge |
 | `tags` | list of strings | Future search and topic pages |
@@ -48,5 +52,6 @@ import { FileTree, Steps } from '@astrojs/starlight/components';
 - List prerequisites before step 1.
 - Use the `NAI_BASE_URL`, `NAI_API_KEY`, `NAI_MODEL` variables in all code.
 - Put product-version-specific details in an `<Aside>` and name the release.
-- End tutorials with a **Check your work** section and a **Next** link.
+- Link the Nutanix documentation you relied on in `sources`.
+- Interactive labs: add a kind to `src/components/LabDemo.astro`.
 - Diagrams: use the `<Mermaid>` component.

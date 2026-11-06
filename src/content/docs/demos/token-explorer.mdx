@@ -1,0 +1,20 @@
+---
+title: "Token Explorer"
+description: "Type a phrase and inspect a simplified token split."
+type: demo
+level: beginner
+duration: 4 min
+topic: "Model Serving"
+task: "Learn concepts"
+sidebar:
+  order: 3
+---
+import LabDemo from '~/components/LabDemo.astro';
+
+See how whitespace and punctuation can change the pieces a model receives.
+
+<LabDemo kind="token-explorer" />
+
+## 01 · Try a comparison
+
+Add punctuation or leading spaces, then compare the pieces. This demo uses a simple text splitter. Production tokenizers can split words into smaller pieces and produce different counts.

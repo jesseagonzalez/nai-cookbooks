@@ -5,16 +5,32 @@ interface Props {
   duration?: string;
   date?: Date;
   author?: string;
+  /** When set, shows a "Mark complete" toggle stored in localStorage. */
+  id?: string;
 }
-const { level, type, duration, date, author } = Astro.props;
+const { level, type, duration, date, author, id } = Astro.props;
 const label = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 ---
-{(level || type || duration || date) && (
+{(level || type || duration || date || id) && (
   <div class="academy-meta">
     {type && <span class="academy-pill">{label(type)}</span>}
-    {level && <span class="academy-pill" data-level={level}>{label(level)}</span>}
-    {duration && <span class="academy-pill">⏱ {duration}</span>}
+    {(level || duration) && <span class="academy-pill" data-level={level}>{[level && label(level), duration].filter(Boolean).join(' · ')}</span>}
     {date && <span class="academy-pill">{date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' })}</span>}
     {author && <span class="academy-pill">{author}</span>}
+    {id && <button type="button" class="ll-complete" data-complete={id} aria-pressed="false">Mark complete</button>}
   </div>
 )}
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-complete]').forEach((btn) => {
+    const id = btn.dataset.complete!;
+    const read = (): string[] => { try { return JSON.parse(localStorage.getItem('latent-progress') || '[]'); } catch { return []; } };
+    const paint = () => { const on = read().includes(id); btn.setAttribute('aria-pressed', String(on)); btn.textContent = on ? '✓ Completed' : 'Mark complete'; };
+    btn.addEventListener('click', () => {
+      const s = new Set(read()); s.has(id) ? s.delete(id) : s.add(id);
+      try { localStorage.setItem('latent-progress', JSON.stringify([...s])); } catch {}
+      paint();
+    });
+    paint();
+  });
+</script>

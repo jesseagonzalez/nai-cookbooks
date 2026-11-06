@@ -1,0 +1,19 @@
+---
+import { Image } from 'astro:assets';
+import chevron from '~/assets/chevron.png';
+import { withBase } from '~/lib/url';
+---
+<section class="ll-hero not-content">
+  <div class="ll-hero-intro">
+    <p class="ll-eyebrow">Nutanix Enterprise AI</p>
+    <h1>Learn Nutanix<br /><em>Enterprise AI</em></h1>
+    <p class="ll-hero-lede">Learn to serve models on Nutanix Enterprise AI, connect applications and tools, and measure how your endpoints perform.</p>
+    <div class="ll-actions">
+      <a class="ll-btn primary" href={withBase('/learn/nai-foundations/')}>Start learning <span aria-hidden="true">↗</span></a>
+      <a class="ll-btn" href={withBase('/demos/')}>Explore demos <span aria-hidden="true">→</span></a>
+    </div>
+  </div>
+  <div class="ll-hero-art" aria-hidden="true">
+    <Image src={chevron} alt="" widths={[600, 1000]} sizes="(max-width: 50rem) 100vw, 45vw" loading="eager" />
+  </div>
+</section>

@@ -1,0 +1,29 @@
+---
+title: "Connect an OpenAI-compatible client"
+description: "Map the base URL, authentication, and served model to your app."
+type: cookbook
+level: intermediate
+duration: 10 min
+topic: "Endpoint APIs"
+task: "Connect & integrate"
+sources:
+  - label: "Nutanix endpoint validation and client examples"
+    url: "https://www.nutanix.com/tech-center/blog/reasoning-models-on-nutanix-enterprise-ai"
+  - label: "NAI 2.8 API Client Keys"
+    url: "https://portal.nutanix.com/page/documents/details?targetId=Nutanix-Enterprise-AI-v2_8%3Atop-nai-api-keys-c.html"
+sidebar:
+  order: 4
+---
+Use an OpenAI-compatible client against an NAI chat endpoint. Start with a successful cURL request so you have a reference when debugging SDK or UI configuration.
+
+## 01 · Configure the three settings
+
+Use the endpoint’s documented API base URL, its served model identifier, and the client credential in the format expected by your SDK or UI. The SDK base URL omits the chat-completions route that the client appends.
+
+## 02 · Keep keys server-side
+
+Load the key from your application’s secret store. For a chat UI, set the custom provider configuration on its server and keep access scoped to the intended endpoint.
+
+## 03 · Test the features you need
+
+Start with non-streaming chat. Verify streaming, structured output, or tool calling separately against your release, model, and endpoint type before depending on them.

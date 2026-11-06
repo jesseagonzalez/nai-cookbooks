@@ -1,0 +1,24 @@
+---
+import { getCollection } from 'astro:content';
+import { withBase } from '~/lib/url';
+const paths: [string, string[]][] = [
+  ['01 / Foundations', ['learn/nai-foundations', 'learn/how-models-work', 'cookbook/first-request']],
+  ['02 / Platform operations', ['cookbook/deploy-nai', 'blog/ops-field-note', 'cookbook/inference-bench']],
+  ['03 / Application integration', ['cookbook/connect-app', 'showcase/document-assistant', 'cookbook/mcp-gateway']],
+  ['04 / Tools & frameworks', ['recipes/python-openai-sdk', 'recipes/open-webui', 'cookbook/langchain-rag', 'recipes/vscode-coding-assistant']],
+];
+const docs = new Map((await getCollection('docs')).map((e) => [e.id, e.data.title]));
+---
+<section class="ll-paths not-content">
+  <p class="ll-eyebrow">Learning paths</p>
+  <h2>Choose a learning path</h2>
+  <p>Follow the resources in order or jump to the task you’re working on.</p>
+  <div class="ll-path-grid">
+    {paths.map(([name, ids]) => (
+      <section class="ll-track">
+        <h3>{name}</h3>
+        {ids.filter((id) => docs.has(id)).map((id) => <a href={withBase(`/${id}/`)}>{docs.get(id)} →</a>)}
+      </section>
+    ))}
+  </div>
+</section>

@@ -1,0 +1,87 @@
+---
+/**
+ * In-browser lab demos. They use fictional data and send no network requests.
+ * <LabDemo kind="token-explorer" | "retrieval-lab" | "endpoint-lab" | "document-assistant" | "agent-trace" />
+ */
+interface Props { kind: 'token-explorer' | 'retrieval-lab' | 'endpoint-lab' | 'document-assistant' | 'agent-trace' }
+const { kind } = Astro.props;
+---
+<div class="ll-demo not-content" data-demo={kind}>
+  <p class="ll-eyebrow">Try it · runs in your browser</p>
+  {kind === 'token-explorer' && (
+    <label>Text to split<textarea data-in rows="3">A model predicts the next token.</textarea></label>
+  )}
+  {kind === 'retrieval-lab' && (
+    <label>Search query<input data-in value="travel receipts" /></label>
+  )}
+  {kind === 'endpoint-lab' && (
+    <>
+      <label>Request URL<select data-in><option>https://nai.lab.example/chat</option><option>https://nai.lab.example/api/v1/chat/completions</option></select></label>
+      <label>Simulated client key<select data-key><option>Scoped to this endpoint</option><option>Scoped to another endpoint</option><option>Missing key</option></select></label>
+      <label>Model ID<select data-model><option>handbook-chat</option><option>unknown-model</option></select></label>
+    </>
+  )}
+  {kind === 'document-assistant' && (
+    <label>Sample question<select data-in><option>When are travel receipts due?</option><option>Can I request a monitor?</option><option>Are meals reimbursed?</option></select></label>
+  )}
+  {kind === 'agent-trace' && (
+    <label>Trace stage<select data-in><option>1. Assistant requests a lookup</option><option>2. App runs the authorized lookup</option><option>3. Assistant reports the status</option></select></label>
+  )}
+  <output data-out aria-live="polite"></output>
+</div>
+
+<script>
+  const docs = [
+    ['TRAVEL', 'Submit travel receipts within 30 days of the trip.'],
+    ['PTO', 'Request vacation at least two weeks before the first day off.'],
+    ['EQUIPMENT', 'Employees can request one external monitor through IT.'],
+  ];
+  const words = (t: string) => new Set(t.toLowerCase().match(/[a-z0-9]+/g) || []);
+  document.querySelectorAll<HTMLElement>('[data-demo]').forEach((el) => {
+    const kind = el.dataset.demo;
+    const input = el.querySelector<HTMLInputElement & HTMLSelectElement>('[data-in]')!;
+    const key = el.querySelector<HTMLSelectElement>('[data-key]');
+    const model = el.querySelector<HTMLSelectElement>('[data-model]');
+    const out = el.querySelector<HTMLOutputElement>('[data-out]')!;
+    const line = (text: string, cls = '') => { const p = document.createElement('p'); p.textContent = text; if (cls) p.className = cls; return p; };
+    const update = () => {
+      if (kind === 'token-explorer') {
+        const pieces = input.value.match(/\s+|[\p{L}\p{N}]+|[^\s\p{L}\p{N}]/gu) || [];
+        out.replaceChildren(document.createTextNode(`${pieces.length} pieces `));
+        for (const piece of pieces) {
+          const s = document.createElement('span'); s.className = 'll-token';
+          s.textContent = piece.replace(/ /g, '␣').replace(/\n/g, '↵'); out.append(s);
+        }
+      } else if (kind === 'retrieval-lab') {
+        const q = [...words(input.value)];
+        const ranked = docs.map(([k, p]) => [k, p, q.filter((w) => words(p).has(w)).length] as const).sort((a, b) => b[2] - a[2]);
+        out.replaceChildren(...ranked.map(([k, p, s]) => line(`${s} match${s === 1 ? '' : 'es'} · ${k} — ${p}`, s ? 'hit' : '')));
+      } else if (kind === 'endpoint-lab') {
+        const msgs = [
+          '404 · The route was not found. Choose the documented chat completions URL.',
+          '401 · Supply a valid client key.',
+          '403 · The client key lacks access to this endpoint.',
+          '400 · Use the served model identifier.',
+          '200 · Chat completion received. “OK.”',
+        ];
+        const k = key!.selectedIndex;
+        const r = input.selectedIndex === 0 ? 0 : k === 2 ? 1 : k === 1 ? 2 : model!.selectedIndex === 1 ? 3 : 4;
+        out.replaceChildren(line(msgs[r], r === 4 ? 'ok' : 'err'));
+      } else if (kind === 'document-assistant') {
+        out.replaceChildren(line([
+          `Within 30 days. Evidence [TRAVEL] “${docs[0][1]}”`,
+          `Yes, one monitor through IT. Evidence [EQUIPMENT] “${docs[2][1]}”`,
+          'The sample handbook has no meal reimbursement policy.',
+        ][input.selectedIndex]));
+      } else if (kind === 'agent-trace') {
+        out.replaceChildren(line([
+          'lookup_order({"order_id":"A-42"})',
+          'Authorization verified. Tool result {"order_id":"A-42","status":"shipped"}',
+          '“Order A-42 has shipped.”',
+        ][input.selectedIndex]));
+      }
+    };
+    [input, key, model].forEach((x) => x?.addEventListener('input', update));
+    update();
+  });
+</script>

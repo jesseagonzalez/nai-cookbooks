@@ -13,14 +13,21 @@ export default defineConfig({
   markdown: { rehypePlugins: [rehypeBaseLinks(base)] },
   integrations: [
     starlight({
-      title: 'Nutanix Enterprise AI Academy',
+      title: 'Latent Lab',
       description:
-        'Learn to deploy, operate, and build with Nutanix Enterprise AI, from first concepts to production patterns.',
-      logo: { src: './src/assets/logo.svg', replacesTitle: false },
+        'A field guide to Nutanix Enterprise AI: learn to deploy, integrate, and operate private AI, from first concepts to production patterns.',
+      logo: {
+        light: './src/assets/nutanix-light.svg',
+        dark: './src/assets/nutanix-dark.svg',
+        alt: 'Nutanix',
+      },
       customCss: ['./src/styles/theme.css'],
       lastUpdated: true,
       components: {
+        Header: './src/components/Header.astro',
         PageTitle: './src/components/PageTitle.astro',
+        MarkdownContent: './src/components/MarkdownContent.astro',
+        ThemeProvider: './src/components/ThemeProvider.astro',
       },
       social: [
         { icon: 'github', label: 'GitHub', href: 'https://github.com/jesseagonzalez/nai-cookbooks' },
@@ -33,10 +40,11 @@ export default defineConfig({
             { label: 'Learning paths', link: '/start-here/learning-paths/' },
           ],
         },
-        { label: 'Concepts', items: [{ autogenerate: { directory: 'concepts' } }] },
-        { label: 'Tutorials', items: [{ autogenerate: { directory: 'tutorials' } }] },
+        { label: 'Learn', items: [{ autogenerate: { directory: 'learn' } }] },
+        { label: 'Demos', items: [{ autogenerate: { directory: 'demos' } }] },
+        { label: 'Cookbook', items: [{ autogenerate: { directory: 'cookbook' } }] },
         { label: 'Recipes', items: [{ autogenerate: { directory: 'recipes' } }] },
-        { label: 'Demos & showcases', items: [{ autogenerate: { directory: 'demos' } }] },
+        { label: 'Showcase', items: [{ autogenerate: { directory: 'showcase' } }] },
         { label: 'Blog', items: [{ autogenerate: { directory: 'blog' } }] },
         {
           label: 'Contribute',

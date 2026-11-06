@@ -1,0 +1,20 @@
+---
+title: "Retrieval Sandbox"
+description: "Change the query and see which sample passages rank highest."
+type: demo
+level: beginner
+duration: 5 min
+topic: "Retrieval & RAG"
+task: "Learn concepts"
+sidebar:
+  order: 4
+---
+import LabDemo from '~/components/LabDemo.astro';
+
+This toy retriever counts unique query words found in each passage. Try “travel receipts” and then “trip proof” to see a limitation of exact matching.
+
+<LabDemo kind="retrieval-lab" />
+
+## 01 · Inspect the scores
+
+A zero score means there was no exact word overlap. Real systems can combine keyword and semantic retrieval, then evaluate which approach finds the supporting passages on their own corpus.
