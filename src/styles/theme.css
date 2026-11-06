@@ -329,3 +329,6 @@ nav.sidebar a[aria-current='page'], nav.sidebar a[aria-current='page']:hover {
 
 /* Mermaid figure */
 .academy-mermaid { border-radius: var(--ll-radius) !important; }
+
+/* Learning path thumbnails */
+.ll-path-thumb { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 4px; margin-bottom: 0.8rem; }

@@ -1,11 +1,16 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import { withBase } from '~/lib/url';
-const paths: [string, string[]][] = [
-  ['01 / Foundations', ['learn/nai-foundations', 'learn/how-models-work', 'cookbook/first-request']],
-  ['02 / Platform operations', ['cookbook/deploy-nai', 'blog/ops-field-note', 'cookbook/inference-bench']],
-  ['03 / Application integration', ['cookbook/connect-app', 'showcase/document-assistant', 'cookbook/mcp-gateway']],
-  ['04 / Tools & agents', ['recipes/python-openai-sdk', 'recipes/open-webui', 'cookbook/integrate-opencode', 'cookbook/integrate-claude']],
+import tokenExplorer from '~/assets/showcase/token-explorer.jpg';
+import endpointLab from '~/assets/showcase/endpoint-lab.jpg';
+import documentAssistant from '~/assets/showcase/document-assistant.jpg';
+import agentTrace from '~/assets/showcase/agent-trace.jpg';
+const paths: [string, ImageMetadata, string[]][] = [
+  ['01 / Foundations', tokenExplorer, ['learn/nai-foundations', 'learn/how-models-work', 'cookbook/first-request']],
+  ['02 / Platform operations', endpointLab, ['cookbook/deploy-nai', 'blog/ops-field-note', 'cookbook/inference-bench']],
+  ['03 / Application integration', documentAssistant, ['cookbook/connect-app', 'showcase/document-assistant', 'cookbook/mcp-gateway']],
+  ['04 / Tools & agents', agentTrace, ['recipes/python-openai-sdk', 'recipes/open-webui', 'cookbook/integrate-opencode', 'cookbook/integrate-claude']],
 ];
 const docs = new Map((await getCollection('docs')).map((e) => [e.id, e.data.title]));
 ---
@@ -14,8 +19,9 @@ const docs = new Map((await getCollection('docs')).map((e) => [e.id, e.data.titl
   <h2>Choose a learning path</h2>
   <p>Follow the resources in order or jump to the task you’re working on.</p>
   <div class="ll-path-grid">
-    {paths.map(([name, ids]) => (
+    {paths.map(([name, image, ids]) => (
       <section class="ll-track">
+        <Image class="ll-path-thumb" src={image} alt="" widths={[420, 840]} sizes="(max-width: 700px) 100vw, 300px" loading="lazy" />
         <h3>{name}</h3>
         {ids.filter((id) => docs.has(id)).map((id) => <a href={withBase(`/${id}/`)}>{docs.get(id)} →</a>)}
       </section>
